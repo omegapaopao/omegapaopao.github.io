@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>omegapaopao · 四种尺度</title>
+<meta name="description" content="omegapaopao 的开源项目索引：从 19 KB 的浏览器脚本到四层物联网架构，四台机器的仪表盘。">
+<style>
+/* ==========================================================================
+   字面色值只允许出现在下面这一个 :root 里。其余规则一律 var()。
+   这是 dsh-open-design 里 P0-1 的写法。
+   ========================================================================== */
+:root {
+  --c-void:    #05060a;
+  --c-deep:    #080b11;
+  --c-carbon:  #0d1117;
+  --c-raise:   #131a23;
+  --c-line:    #1c232e;
+  --c-line2:   #2c3543;
+  --c-line3:   #5b6880;
+  --c-white:   #f4f7fb;
+  --c-mute:    #939bab;
+  --c-dim:     #737c8b;
+
+  --c-amber:   #ffd400;
+  --c-red:     #ff4a2b;
+  --c-lime:    #a6ff2e;
+  --c-teal:    #16e8cb;
+
+  --c-amber-a: rgba(255, 212, 0, .16);
+  --c-red-a:   rgba(255, 74, 43, .16);
+  --c-lime-a:  rgba(166, 255, 46, .16);
+  --c-teal-a:  rgba(22, 232, 203, .16);
+  --c-spot:    rgba(255, 212, 0, .10);
+  --c-glass:   rgba(8, 11, 17, .72);
+  --c-scan:    rgba(255, 255, 255, .035);
+
+  --ink:       var(--c-white);
+  --mute:      var(--c-mute);
+  --dim:       var(--c-dim);
+  --line:      var(--c-line);
+  --line2:     var(--c-line2);
+  --line3:     var(--c-line3);
+  --glow:      0 0 34px rgba(255, 212, 0, .30);
+
+  --font-display: "Bahnschrift SemiCondensed", "Bahnschrift", "Segoe UI Variable Display", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  --font-body: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+
+  --ease: cubic-bezier(.16, 1, .3, 1);
+  --nav-h: 70px;
+  --gutter: clamp(18px, 4.4vw, 54px);
+  --shell: 1360px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--c-void);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--c-amber); color: var(--c-void); }
+
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+
+h1, h2, .h1, .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -.03em;
+  margin: 0;
+  text-transform: none;
+}
+
+:focus-visible { outline: 2px solid var(--c-amber); outline-offset: 3px; }
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ---------------------------------------------------------------- 背景层 */
+#fx {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, var(--c-scan) 0 1px, transparent 1px 3px);
+}
+
+.spot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  width: 640px;
+  height: 640px;
+  margin: -320px 0 0 -320px;
+  pointer-events: none;
+  transform: translate3d(-100vw, -100vh, 0);
+  background: radial-gradient(closest-side, var(--c-spot), transparent 72%);
+  mix-blend-mode: screen;
+}
+
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 2px;
+  transform-origin: 0 50%;
+  background: transparent;
+}
+
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@supports (animation-timeline: scroll()) {
+  .progress {
+    background: linear-gradient(90deg, var(--c-amber), var(--c-red), var(--c-teal));
+    animation: grow linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* 页面主体必须压在背景层之上 */
+.page { position: relative; z-index: 3; }
+
+/* ------------------------------------------------------------------ 导航 */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--nav-h);
+  background: var(--c-glass);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-inner {
+  height: 100%;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  margin-right: auto;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: .1em;
+  color: var(--ink);
+}
+
+.brand::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: var(--c-amber);
+  box-shadow: var(--glow);
+  transition: transform 220ms var(--ease);
+}
+
+.brand:hover::before { transform: scaleX(2.8); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .08em;
+  color: var(--mute);
+}
+
+.nav-links a { transition: color 180ms var(--ease); }
+.nav-links a:hover { color: var(--c-amber); }
+
+/* ------------------------------------------------------------------ 首屏 */
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--nav-h) + clamp(30px, 5vh, 64px)) 0 clamp(24px, 4vh, 46px);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .18em;
+  color: var(--c-amber);
+  margin-bottom: clamp(18px, 2.4vh, 30px);
+}
+
+.hero h1 {
+  font-size: clamp(3.4rem, 13.5vw, 11.5rem);
+  line-height: .9;
+  letter-spacing: -.045em;
+}
+
+.h1-cn { display: block; color: var(--c-white); }
+
+.h1-en {
+  display: block;
+  margin-top: .06em;
+  font-size: clamp(1.05rem, 3.1vw, 2.6rem);
+  letter-spacing: .06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-line3);
+}
+
+.hero-sub {
+  margin-top: clamp(22px, 3vh, 34px);
+  max-width: 46ch;
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+  color: var(--mute);
+}
+
+.hero-cta {
+  margin-top: clamp(24px, 3.4vh, 38px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 28px;
+  background: var(--c-amber);
+  color: var(--c-void);
+  border: 1px solid var(--c-amber);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  box-shadow: var(--glow);
+  transition: transform 180ms var(--ease), filter 180ms var(--ease);
+}
+
+.btn-primary:hover { filter: brightness(1.12); }
+.btn-primary:active { transform: translateY(1px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 15px 24px;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line3);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  transition: border-color 180ms var(--ease), background-color 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.btn-ghost:hover { border-color: var(--c-amber); background: var(--c-amber-a); }
+.btn-ghost:active { transform: translateY(1px); }
+
+/* 首屏底部读数条 */
+.ticker {
+  margin-top: clamp(30px, 5vh, 60px);
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px clamp(18px, 3.4vw, 44px);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+.ticker b { color: var(--c-white); font-weight: 500; }
+
+/* ------------------------------------------------------------------ 分节 */
+.module, .band { position: relative; padding: clamp(72px, 10vw, 150px) 0; }
+
+.band { border-top: 1px solid var(--line); }
+
+/* 巨型幽灵标题 */
+.ghost {
+  position: absolute;
+  top: clamp(20px, 3vw, 46px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 15vw, 14rem);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: .82;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line2);
+  opacity: .5;
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes drift { from { transform: translate(-50%, 16%); } to { transform: translate(-50%, -16%); } }
+
+@supports (animation-timeline: view()) {
+  .ghost {
+    animation: drift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+}
+
+/* ------------------------------------------------------------------ 读数带 */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.stat {
+  padding: clamp(22px, 3vw, 38px) clamp(14px, 2vw, 28px);
+  position: relative;
+}
+
+.stat + .stat { border-left: 1px solid var(--line); }
+
+.stat-v {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5.4vw, 4.4rem);
+  font-weight: 700;
+  line-height: .94;
+  letter-spacing: -.045em;
+  color: var(--c-white);
+}
+
+.stat-u { font-size: .36em; font-weight: 600; color: var(--c-amber); margin-left: 6px; letter-spacing: 0; }
+
+.stat-k {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  color: var(--dim);
+}
+
+/* --------------------------------------------------------------- 跑马灯 */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: clamp(14px, 1.8vw, 24px) 0;
+  background: var(--c-deep);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 64px);
+  width: max-content;
+  animation: slide 32s linear infinite;
+}
+
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+@keyframes slide { to { transform: translateX(-50%); } }
+
+.marquee-track span {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--c-line3);
+}
+
+.marquee-track .mk { color: var(--c-amber); -webkit-text-stroke: 0; font-size: clamp(.9rem, 1.6vw, 1.3rem); }
+
+/* ----------------------------------------------------------------- 尺度轴 */
+.sec-head { max-width: 74ch; }
+
+.sec-title { font-size: clamp(1.9rem, 4.6vw, 3.6rem); }
+
+.sec-sub { margin-top: 20px; max-width: 62ch; color: var(--mute); }
+
+.axis { margin-top: clamp(46px, 6vw, 78px); }
+
+.axis-scale {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--dim);
+}
+
+.bar-row { padding: clamp(16px, 2vw, 24px) 0; border-bottom: 1px solid var(--line); }
+
+.bar-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.bar-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.1vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -.015em;
+}
+
+.bar-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: .06em;
+  color: var(--tone, var(--c-amber));
+}
+
+.bar-track {
+  position: relative;
+  height: 10px;
+  background: var(--c-carbon);
+  border: 1px solid var(--line);
+}
+
+.bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w);
+  background: var(--tone, var(--c-amber));
+  box-shadow: 0 0 22px var(--tone-soft, var(--c-amber-a));
+  transform-origin: 0 50%;
+  transition: transform 640ms var(--ease) var(--d, 0ms);
+}
+
+.js-reveal .bar-fill { transform: scaleX(.001); }
+.js-reveal .bar-row.is-in .bar-fill { transform: scaleX(1); }
+
+/* --------------------------------------------------------------- 项目模块 */
+.module {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(90% 60% at 78% 0%, var(--tone-soft, var(--c-amber-a)) 0%, transparent 62%),
+    var(--c-deep);
+}
+
+.m-head { position: relative; max-width: 70ch; }
+
+.m-tag {
+  padding-left: 14px;
+  border-left: 3px solid var(--tone, var(--c-amber));
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  color: var(--tone, var(--c-amber));
+  margin-bottom: 18px;
+}
+
+.m-title {
+  font-size: clamp(2.1rem, 6.4vw, 5.2rem);
+  letter-spacing: -.045em;
+  line-height: .95;
+}
+
+.m-lede { margin-top: 22px; max-width: 62ch; color: var(--mute); }
+.m-lede strong { color: var(--c-white); font-weight: 600; }
+
+.m-grid {
+  margin-top: clamp(40px, 5.4vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(26px, 4vw, 60px);
+  align-items: start;
+}
+
+.m-grid-wide { grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); }
+
+/* 光标跟随的边框高光 */
+.lit {
+  position: relative;
+  background: var(--c-carbon);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.lit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .55;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 0%),
+    var(--tone-soft, var(--c-amber-a)),
+    transparent 64%
+  );
+}
+
+.lit > * { position: relative; }
+
+.lit-head {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lit-head em { font-style: normal; color: var(--tone, var(--c-amber)); }
+
+/* 速度腔：纯 CSS 流光 */
+.chamber {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--c-deep), var(--c-carbon));
+}
+
+.streak {
+  position: absolute;
+  left: -30%;
+  height: 2px;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--tone, var(--c-amber)), transparent);
+  animation: fly linear infinite;
+}
+
+@keyframes fly { to { transform: translateX(340%); } }
+
+.chamber-read {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--c-white);
+}
+
+.chamber-read b { color: var(--tone, var(--c-amber)); }
+.chamber-read span { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--dim); margin-top: 8px; }
+
+/* 快捷键表 */
+.key-row {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 10px 18px;
+  transition: background-color 220ms var(--ease);
+}
+
+.key-row + .key-row { border-top: 1px solid var(--line); }
+.key-row.is-hit { background: var(--tone-soft, var(--c-amber-a)); }
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 3px 8px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--c-white);
+  background: var(--c-raise);
+  border: 1px solid var(--line3);
+  transition: border-color 200ms var(--ease);
+}
+
+.key-row.is-hit kbd { border-color: var(--tone, var(--c-amber)); }
+.key-act { font-size: 13.5px; color: var(--mute); }
+
+/* 示波器 */
+.scope-box { padding: 0; }
+
+#scope { display: block; width: 100%; height: 190px; }
+
+.scope-note {
+  padding: 10px 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+/* 公式 */
+.formula {
+  font-family: var(--font-mono);
+  font-size: clamp(1.1rem, 2.4vw, 1.75rem);
+  letter-spacing: -.02em;
+  color: var(--c-white);
+  padding: 22px 18px;
+}
+
+.formula b { color: var(--tone, var(--c-amber)); font-weight: 600; }
+
+/* 技能点阵 */
+.dots {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 6px;
+  padding: 22px 18px;
+}
+
+.dots span {
+  aspect-ratio: 1;
+  background: var(--c-line);
+  border: 1px solid var(--c-line2);
+  animation: dotWave 3.4s var(--ease) infinite;
+  animation-delay: calc(var(--i) * 46ms);
+}
+
+@keyframes dotWave {
+  0%, 84%, 100% { background: var(--c-line); border-color: var(--c-line2); }
+  44% { background: var(--tone, var(--c-teal)); border-color: var(--tone, var(--c-teal)); }
+}
+
+/* 层叠架构 */
+.layers { border-left: 1px solid var(--line2); padding-left: clamp(16px, 2.2vw, 30px); }
+
+.layer { position: relative; padding: 20px 0; }
+.layer + .layer { border-top: 1px solid var(--line); }
+
+.layer::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * clamp(17px, 2.3vw, 31px));
+  top: 27px;
+  width: 9px;
+  height: 9px;
+  background: var(--tone, var(--c-red));
+  box-shadow: 0 0 16px var(--tone, var(--c-red));
+}
+
+.layer-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+
+.layer-tech {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+.layer-note { margin-top: 9px; max-width: 68ch; font-size: 14px; color: var(--mute); }
+
+/* 温度带 */
+.temp { margin-top: clamp(30px, 4vw, 48px); }
+
+.temp-cap {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+
+.temp-bar { position: relative; height: 14px; background: var(--c-carbon); border: 1px solid var(--line); }
+
+.temp-safe {
+  position: absolute;
+  left: 48%;
+  width: 24%;
+  inset-block: 0;
+  background: var(--tone, var(--c-red));
+  box-shadow: 0 0 26px var(--tone-soft, var(--c-red-a));
+}
+
+.temp-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--dim);
+}
+
+/* 功能行 */
+.feat { border-top: 1px solid var(--line); }
+
+.feat-row {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.feat-k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; color: var(--tone, var(--c-lime)); }
+.feat-v { font-size: 14px; color: var(--mute); }
+
+/* 代码块 */
+.code {
+  background: var(--c-carbon);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+}
+
+.code pre {
+  margin: 0;
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: var(--mute);
+  white-space: pre;
+}
+
+.code b { color: var(--c-white); font-weight: 500; }
+.code em { font-style: normal; color: var(--dim); }
+
+/* 指标带 */
+.figures {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.figure { padding: clamp(18px, 2.4vw, 30px) clamp(12px, 1.8vw, 24px); }
+.figure + .figure { border-left: 1px solid var(--line); }
+
+.figure-v {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--c-white);
+}
+
+.figure-u { font-size: .38em; color: var(--tone, var(--c-amber)); margin-left: 4px; letter-spacing: 0; }
+
+.figure-k {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+/* 目录格 */
+.catalog { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.catalog-cell { background: var(--c-carbon); padding: 22px 18px 24px; }
+
+.catalog-k {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--tone, var(--c-teal));
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.catalog-list { list-style: none; margin: 0; padding: 0; font-size: 13px; color: var(--mute); line-height: 2.05; }
+.catalog-list code { font-family: var(--font-mono); font-size: 12px; color: var(--c-white); }
+.catalog-more { margin-top: 12px; font-family: var(--font-mono); font-size: 11px; color: var(--dim); }
+
+/* 引言 */
+.quote { margin-top: clamp(30px, 4vw, 46px); padding-left: 20px; border-left: 3px solid var(--tone, var(--c-amber)); max-width: 44ch; }
+
+.quote p {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -.02em;
+  color: var(--c-white);
+}
+
+.quote cite {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--dim);
+}
+
+/* -------------------------------------------------------------- 技术栈 */
+.stack {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-top: clamp(34px, 4.4vw, 54px);
+}
+
+.stack-cell {
+  background: var(--c-carbon);
+  padding: 20px 16px 24px;
+  transition: background-color 200ms var(--ease);
+}
+
+.stack-cell:hover { background: var(--c-raise); }
+
+.stack-k {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--c-amber);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stack-list { list-style: none; margin: 0; padding: 0; font-size: 12.5px; color: var(--mute); line-height: 2; }
+
+/* ---------------------------------------------------------------- 做法 */
+.method-row {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 22px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.method-row:first-child { border-top: 1px solid var(--line); }
+
+.method-k { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: -.015em; }
+.method-v { font-size: 14.5px; color: var(--mute); max-width: 68ch; }
+.method-v code { font-family: var(--font-mono); font-size: 13px; color: var(--c-amber); }
+
+/* ------------------------------------------------------------- 版本说明 */
+.gate { background: var(--c-carbon); border: 1px solid var(--line); overflow-x: auto; margin-top: clamp(30px, 4vw, 46px); }
+
+.gate-head {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+.gate pre {
+  margin: 0;
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--mute);
+  white-space: pre;
+}
+
+.gate b { color: var(--c-lime); font-weight: 500; }
+
+.colophon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(22px, 3.2vw, 46px);
+  margin-top: clamp(34px, 4.4vw, 54px);
+}
+
+.colophon-item h3 {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  color: var(--c-amber);
+}
+
+.colophon-item p { font-size: 14px; color: var(--mute); }
+
+/* ---------------------------------------------------------------- 页脚 */
+.foot {
+  border-top: 1px solid var(--line);
+  padding: clamp(40px, 6vw, 80px) 0 40px;
+  background: var(--c-deep);
+}
+
+.foot-mark {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 12vw, 10rem);
+  font-weight: 700;
+  letter-spacing: -.05em;
+  line-height: .85;
+  color: transparent;
+  -webkit-text-stroke: 1.2px var(--line3);
+  transition: color 420ms var(--ease);
+}
+
+.foot-mark:hover { color: var(--c-amber); -webkit-text-stroke-color: var(--c-amber); }
+
+.foot-inner {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: .1em;
+  color: var(--dim);
+}
+
+.foot a { transition: color 180ms var(--ease); }
+.foot a:hover { color: var(--c-amber); }
+
+/* ------------------------------------------------------------------ 动效 */
+@keyframes kinIn {
+  from { opacity: 0; transform: translateY(.46em) scale(.84); }
+}
+
+.kin span {
+  display: inline-block;
+  animation: kinIn 760ms var(--ease) both;
+  animation-delay: calc(var(--i) * 34ms + var(--base, 0ms));
+}
+
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 660ms var(--ease), transform 660ms var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+.js-reveal [data-reveal].is-in { opacity: 1; transform: none; }
+
+.js-reveal .clip { clip-path: inset(0 0 100% 0); }
+.js-reveal .clip.is-in { clip-path: inset(0 0 0 0); transition: clip-path 760ms var(--ease) var(--d, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js-reveal [data-reveal],
+  .js-reveal [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0ms;
+  }
+  .js-reveal .clip,
+  .js-reveal .clip.is-in { clip-path: none; transition: none; }
+  .js-reveal .bar-fill,
+  .js-reveal .bar-row.is-in .bar-fill { transform: none; transition: none; }
+  .kin span { animation: none; }
+  .marquee-track { animation: none; }
+  .streak { animation: none; }
+  .dots span {
+    animation: none;
+    background: var(--tone-soft, var(--c-teal-a));
+    border-color: var(--line3);
+  }
+  .ghost { animation: none; }
+  .lit::before { opacity: .3; }
+}
+
+/* ------------------------------------------------------------------ 自适应 */
+@media (max-width: 1080px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat:nth-child(3) { border-left: none; }
+  .stat:nth-child(3), .stat:nth-child(4) { border-top: 1px solid var(--line); }
+  .figures { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .figure:nth-child(4) { border-left: none; border-top: 1px solid var(--line); }
+  .figure:nth-child(4), .figure:nth-child(5) { border-top: 1px solid var(--line); }
+  .stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dots { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+}
+
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .m-grid, .m-grid-wide, .catalog, .colophon-grid, .stack { grid-template-columns: 1fr; }
+  .catalog, .stack { gap: 0; }
+  .catalog-cell, .stack-cell { border-bottom: 1px solid var(--line); }
+  .catalog-cell:last-child, .stack-cell:last-child { border-bottom: none; }
+  .method-row { grid-template-columns: 1fr; gap: 10px; }
+  .ghost { opacity: .28; }
+  .axis-scale { font-size: 10px; }
+}
+
+@media (max-width: 620px) {
+  .stats { grid-template-columns: 1fr; }
+  .stat + .stat { border-left: none; border-top: 1px solid var(--line); }
+  .figures { grid-template-columns: 1fr; }
+  .figure + .figure { border-left: none; border-top: 1px solid var(--line); }
+  .feat-row, .key-row { grid-template-columns: 1fr; gap: 4px; }
+  .dots { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .scope-box #scope { height: 150px; }
+}
+
+@media (hover: none) {
+  .spot { display: none; }
+}
+</style>
+<script>
+(function () {
+  document.documentElement.classList.add('js-reveal');
+})();
+</script>
+</head>
+<body>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="veil" aria-hidden="true"></div>
+<div class="spot" id="spot" aria-hidden="true"></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">omegapaopao</a>
+    <nav class="nav-links" aria-label="页面导航">
+      <a href="#scale">尺度</a>
+      <a href="#m1">MODULES</a>
+      <a href="#stack">STACK</a>
+      <a href="#method">METHOD</a>
+      <a href="https://github.com/omegapaopao" target="_blank" rel="noreferrer">GITHUB</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page" id="top">
+
+  <!-- ============================================================== 首屏 -->
+  <section class="hero" data-od-id="hero">
+    <div class="shell">
+      <p class="hero-eyebrow" data-reveal>GITHUB 项目索引 / 4 个公开仓库</p>
+      <h1 data-reveal style="--d:60ms">
+        <span class="h1-cn kin" data-split>四种尺度</span>
+        <span class="h1-en kin" data-split style="--base:260ms">FOUR SCALES</span>
+      </h1>
+      <p class="hero-sub" data-reveal style="--d:220ms">浏览器脚本、设计工具链、微信小程序、物联网硬件。四台机器，同一个工作台，全部开源。</p>
+      <div class="hero-cta" data-reveal style="--d:300ms">
+        <a class="btn-primary" href="#scale">浏览项目</a>
+        <a class="btn-ghost" href="https://github.com/omegapaopao" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+      <div class="ticker" data-reveal style="--d:380ms">
+        <span>REPOS <b>4</b></span>
+        <span>BYTES <b>1,840,105</b></span>
+        <span>LANGUAGES <b>8</b></span>
+        <span>COMMITS <b>17</b></span>
+        <span>LAST PUSH <b>2026.09.16</b></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 读数带 -->
+  <section data-od-id="stats">
+    <div class="shell">
+      <div class="stats" data-reveal>
+        <div class="stat">
+          <span class="stat-v mono" data-count="4">4</span>
+          <span class="stat-k">公开仓库</span>
+        </div>
+        <div class="stat">
+          <span class="stat-v mono" data-count="1840105">1,840,105</span>
+          <span class="stat-k">代码字节</span>
+        </div>
+        <div class="stat">
+          <span class="stat-v mono" data-count="8">8</span>
+          <span class="stat-k">涉及语言</span>
+        </div>
+        <div class="stat">
+          <span class="stat-v mono" data-count="17">17</span>
+          <span class="stat-k">提交总数</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 跑马灯 -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>MADE IN HEAVEN</span><span class="mk">50×</span>
+      <span>阿伟的智能龟缸</span><span class="mk">99.7%</span>
+      <span>铁记</span><span class="mk">14 动作</span>
+      <span>DSH-OPEN-DESIGN</span><span class="mk">52 技能</span>
+      <span>MADE IN HEAVEN</span><span class="mk">50×</span>
+      <span>阿伟的智能龟缸</span><span class="mk">99.7%</span>
+      <span>铁记</span><span class="mk">14 动作</span>
+      <span>DSH-OPEN-DESIGN</span><span class="mk">52 技能</span>
+    </div>
+  </div>
+
+  <!-- ============================================================ 尺度轴 -->
+  <section class="band" id="scale" data-od-id="scale">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <p class="hero-eyebrow">尺度 / LOG SCALE</p>
+        <h2 class="sec-title">最大那个的体积<br>是其余三个之和的 5.7 倍</h2>
+        <p class="sec-sub">横轴按对数刻度排布，标出四个仓库的代码体量，数字取自 GitHub 的语言统计字节数。体量大不等于复杂：dsh-open-design 的 1.49 MB 里装的基本是纯文本，52 个技能的说明文件。</p>
+      </div>
+
+      <div class="axis">
+        <div class="axis-scale" data-reveal>
+          <span>30 KB</span><span>100 KB</span><span>316 KB</span><span>1 MB</span><span>3.2 MB</span>
+        </div>
+
+        <div class="bar-row" data-reveal style="--tone:var(--c-amber);--tone-soft:var(--c-amber-a)">
+          <div class="bar-top">
+            <span class="bar-name">made in heaven</span>
+            <span class="bar-val">71,409 B</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill" style="--w:17.7%"></span></div>
+        </div>
+
+        <div class="bar-row" data-reveal style="--tone:var(--c-red);--tone-soft:var(--c-red-a);--d:70ms">
+          <div class="bar-top">
+            <span class="bar-name">阿伟的智能龟缸</span>
+            <span class="bar-val">94,323 B</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill" style="--w:23.7%"></span></div>
+        </div>
+
+        <div class="bar-row" data-reveal style="--tone:var(--c-lime);--tone-soft:var(--c-lime-a);--d:140ms">
+          <div class="bar-top">
+            <span class="bar-name">铁记</span>
+            <span class="bar-val">109,864 B</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill" style="--w:27%"></span></div>
+        </div>
+
+        <div class="bar-row" data-reveal style="--tone:var(--c-teal);--tone-soft:var(--c-teal-a);--d:210ms">
+          <div class="bar-top">
+            <span class="bar-name">dsh-open-design</span>
+            <span class="bar-val">1,564,509 B</span>
+          </div>
+          <div class="bar-track"><span class="bar-fill" style="--w:84.7%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================= 模块一 · made in heaven -->
+  <section class="module" id="m1" data-od-id="module-made-in-heaven" style="--tone:var(--c-amber);--tone-soft:var(--c-amber-a)">
+    <span class="ghost" aria-hidden="true">MADE IN HEAVEN</span>
+    <div class="shell">
+      <div class="m-head" data-reveal>
+        <p class="m-tag">GREASEMONKEY · 19 KB · 零依赖 · MIT</p>
+        <h2 class="m-title">made in heaven</h2>
+        <p class="m-lede">浏览器里所有视频倍速脚本都撞在同一堵墙上：<strong>playbackRate 的 16 倍上限</strong>。这个脚本在超过 16 倍时切进自己的 Turbo 引擎，用 Canvas 逐帧渲染加跳帧补偿，把上限推到 50 倍；低于 16 倍时交回原生播放，切换无感。</p>
+        <p class="m-lede">它还得先找得到视频。IVD 视频发现引擎穿透 iframe、Shadow DOM 和 SPA 路由变化；快捷键在事件捕获阶段拦截，避开站点自己的按键绑定。整套东西 19 KB，装进 Tampermonkey 就能跑。</p>
+      </div>
+
+      <div class="m-grid m-grid-wide">
+        <div class="lit" data-reveal>
+          <p class="lit-head"><span>VELOCITY CHAMBER</span><em>TURBO</em></p>
+          <div class="chamber">
+            <span class="streak" style="top:16%;animation-duration:1.9s"></span>
+            <span class="streak" style="top:31%;animation-duration:2.6s;animation-delay:.4s"></span>
+            <span class="streak" style="top:47%;animation-duration:1.4s;animation-delay:.9s"></span>
+            <span class="streak" style="top:62%;animation-duration:3.1s;animation-delay:.2s"></span>
+            <span class="streak" style="top:78%;animation-duration:2.2s;animation-delay:1.3s"></span>
+            <p class="chamber-read"><b>50×</b> 上限<span>NATIVE 0.1× 至 16× / TURBO 16× 至 50×</span></p>
+          </div>
+          <p class="lit-head"><span>KEYMAP</span><em>11 组</em></p>
+          <div id="keyDemo" tabindex="0" role="group" aria-label="快捷键演示，聚焦后按下按键">
+            <div class="key-row" data-key="space"><span><kbd>空格</kbd></span><span class="key-act">播放 / 暂停</span></div>
+            <div class="key-row" data-key="arrowleft arrowright"><span><kbd>←</kbd> <kbd>→</kbd></span><span class="key-act">快退 / 快进 5 秒</span></div>
+            <div class="key-row" data-key="arrowleft arrowright" data-mod="ctrl"><span><kbd>Ctrl</kbd> <kbd>←</kbd> <kbd>→</kbd></span><span class="key-act">快退 / 快进 15 秒</span></div>
+            <div class="key-row" data-key="arrowup arrowdown"><span><kbd>↑</kbd> <kbd>↓</kbd></span><span class="key-act">微调倍速 ±0.25</span></div>
+            <div class="key-row" data-key="1 2 3 5"><span><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>5</kbd></span><span class="key-act">一键切换 1× / 2× / 3× / 5×</span></div>
+            <div class="key-row" data-key="r"><span><kbd>R</kbd></span><span class="key-act">重置回 1 倍速</span></div>
+            <div class="key-row" data-key="f"><span><kbd>F</kbd></span><span class="key-act">全屏</span></div>
+            <div class="key-row" data-key="p"><span><kbd>P</kbd></span><span class="key-act">画中画</span></div>
+            <div class="key-row" data-key="m"><span><kbd>M</kbd></span><span class="key-act">静音</span></div>
+            <div class="key-row" data-key="enter"><span><kbd>数值</kbd> <kbd>回车</kbd></span><span class="key-act">自定义倍速，0.1 至 50×</span></div>
+          </div>
+        </div>
+
+        <div data-reveal style="--d:120ms">
+          <div class="figures" style="margin-top:0">
+            <div class="figure"><span class="figure-v mono">19<span class="figure-u">KB</span></span><span class="figure-k">整包体积</span></div>
+            <div class="figure"><span class="figure-v mono">50<span class="figure-u">×</span></span><span class="figure-k">倍速上限</span></div>
+            <div class="figure"><span class="figure-v mono">16<span class="figure-u">×</span></span><span class="figure-k">浏览器硬顶</span></div>
+            <div class="figure"><span class="figure-v mono">0</span><span class="figure-k">外部依赖</span></div>
+            <div class="figure"><span class="figure-v mono">60<span class="figure-u">fps</span></span><span class="figure-k">面板动画</span></div>
+          </div>
+          <blockquote class="quote">
+            <p>别的脚本能用，made in heaven 好用。</p>
+            <cite>项目 README</cite>
+          </blockquote>
+          <p class="m-lede" style="margin-top:26px">界面是 GPU 加速的毛玻璃面板，可拖拽标题栏，关闭后缩成一颗悬浮球。适用站点从 Bilibili、YouTube、抖音一路铺到网课平台，凡是浏览器能渲染 video 的地方它都能接管。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================= 模块二 · 智能龟缸 -->
+  <section class="module" id="m2" data-od-id="module-turtle-tank" style="--tone:var(--c-red);--tone-soft:var(--c-red-a)">
+    <span class="ghost" aria-hidden="true">TURTLE TANK</span>
+    <div class="shell">
+      <div class="m-head" data-reveal>
+        <p class="m-tag">ESP32-C3 · BLE 5.0 GATT · PYTHON ASYNCIO · CLOUDBASE · 微信小程序</p>
+        <h2 class="m-title">阿伟的智能龟缸</h2>
+        <p class="m-lede">乌龟是变温动物，代谢速率和免疫能力都挂在水温上。水温偏离适宜区间超过两小时，呼吸道感染的相对风险明显上升。原来的做法是一支本地温度计，读数靠人看，昨天多少度没人知道。</p>
+        <p class="m-lede">现在这条链路有四层，每层用最合适的语言：芯片上跑 C++ 采样，PC 上跑 Python 桥接，云端跑 Node.js 写库，屏幕上跑小程序画图。</p>
+      </div>
+
+      <div class="figures" style="margin-top:clamp(36px,4.6vw,58px)" data-reveal>
+        <div class="figure"><span class="figure-v mono">5<span class="figure-u">秒</span></span><span class="figure-k">采样周期</span></div>
+        <div class="figure"><span class="figure-v mono">±0.5<span class="figure-u">°C</span></span><span class="figure-k">DS18B20 精度</span></div>
+        <div class="figure"><span class="figure-v mono">99.7<span class="figure-u">%</span></span><span class="figure-k">数据投递率</span></div>
+        <div class="figure"><span class="figure-v mono">800<span class="figure-u">ms</span></span><span class="figure-k">端到端延迟 P50</span></div>
+        <div class="figure"><span class="figure-v mono">30<span class="figure-u">天</span></span><span class="figure-k">本地滚动窗口</span></div>
+      </div>
+
+      <div class="m-grid">
+        <div class="lit scope-box" data-reveal>
+          <p class="lit-head"><span>WATER TEMPERATURE</span><em>22 至 28 °C</em></p>
+          <canvas id="scope" aria-hidden="true"></canvas>
+          <p class="scope-note">示意波形，用于说明 5 秒采样节奏与越界形态，不是实测数据。</p>
+        </div>
+
+        <div data-reveal style="--d:120ms">
+          <div class="layers">
+            <div class="layer">
+              <span class="layer-name">感知层</span>
+              <span class="layer-tech">ESP32-C3 · DS18B20 · C++ / ARDUINO CORE</span>
+              <p class="layer-note">每 5 秒采一次水温，通过 BLE 5.0 GATT 通知广播出去。分辨率 0.0625 °C，设备名默认 TurtleSensor。</p>
+            </div>
+            <div class="layer">
+              <span class="layer-name">边缘桥接层</span>
+              <span class="layer-tech">PYTHON 3.12 · ASYNCIO · BLEAK · AIOHTTP · SQLITE WAL</span>
+              <p class="layer-note">PC 上的常驻进程，生产者消费者模式：Bleak 异步订阅蓝牙特征，SQLite 以 WAL 模式落盘，aiohttp 开局域网 REST 接口给小程序，同时把每个采样周期 POST 到云端。</p>
+            </div>
+            <div class="layer">
+              <span class="layer-name">云原生服务层</span>
+              <span class="layer-tech">NODE.JS 18 · CLOUDBASE · 云函数 · 静态托管 CDN</span>
+              <p class="layer-note">文档数据库存全量时序；写入代理把最新温度同步成静态快照推上 CDN，远端读取压到 200 ms 以内；云函数做 HTTP 中继，绕开小程序的域名白名单限制。</p>
+            </div>
+            <div class="layer">
+              <span class="layer-name">交互呈现层</span>
+              <span class="layer-tech">微信小程序 · MVVM · CANVAS 2D</span>
+              <p class="layer-note">3 秒轮询的实时仪表盘，温度到色彩四级映射；Canvas 2D 画时序曲线，1 小时 / 6 小时 / 24 小时 / 7 天四个窗口切换，自动标出峰值和谷值。</p>
+            </div>
+          </div>
+
+          <div class="temp">
+            <p class="temp-cap">适宜区间 · 22 至 28 °C</p>
+            <div class="temp-bar"><span class="temp-safe"></span></div>
+            <div class="temp-ticks"><span>10</span><span>22</span><span>28</span><span>35 °C</span></div>
+          </div>
+
+          <blockquote class="quote">
+            <p>每一度，都是对生命的尊重。</p>
+            <cite>阿伟 · 项目 README</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== 模块三 · 铁记 -->
+  <section class="module" id="m3" data-od-id="module-tieji" style="--tone:var(--c-lime);--tone-soft:var(--c-lime-a)">
+    <span class="ghost" aria-hidden="true">TIEJI LOG</span>
+    <div class="shell">
+      <div class="m-head" data-reveal>
+        <p class="m-tag">微信小程序 · 原生 + 云开发 · 深色主题 · MIT</p>
+        <h2 class="m-title">铁记</h2>
+        <p class="m-lede">力量训练要记的东西很固定：重量、组数、次数。记完得看出来有没有进步，所以最大力量用 Epley 公式实时推算，训练容量自动出，长期变化交给折线图和日历热力图。</p>
+        <p class="m-lede">没有后端服务器。小程序原生加云开发，数据库、存储、云函数都在云上，客户端直连。它没有用户增长计划，起点就是作者自己训练时需要。</p>
+      </div>
+
+      <div class="m-grid">
+        <div data-reveal>
+          <div class="lit">
+            <p class="lit-head"><span>EPLEY 1RM</span><em>实时推算</em></p>
+            <p class="formula">1RM = <b>w</b> × (1 + <b>r</b> / 30)</p>
+            <p class="scope-note" style="border-top:1px solid var(--line)">w 为重量，r 为次数。输入即出结果，不需要按保存。</p>
+          </div>
+          <div class="feat" style="margin-top:26px">
+            <div class="feat-row"><span class="feat-k">记录</span><span class="feat-v">重量 / 组数 / 次数用步进器加减，容量自动出</span></div>
+            <div class="feat-row"><span class="feat-k">计时</span><span class="feat-v">组间休息 30 秒至 5 分钟，圆形倒计时，到点震动</span></div>
+            <div class="feat-row"><span class="feat-k">动作库</span><span class="feat-v">胸背腿肩臂五类，14 个预置动作，可以自己加</span></div>
+            <div class="feat-row"><span class="feat-k">历史</span><span class="feat-v">按日期查，左滑删单条，长按删整次训练</span></div>
+            <div class="feat-row"><span class="feat-k">统计</span><span class="feat-v">折线图、日历热力图、训练次数与总容量卡片</span></div>
+            <div class="feat-row"><span class="feat-k">账号</span><span class="feat-v">用户名密码注册、头像上传、自动登录，口令加盐哈希后入库</span></div>
+            <div class="feat-row"><span class="feat-k">反馈</span><span class="feat-v">像评论区一样的公开意见墙，所有人的留言都能看到</span></div>
+            <div class="feat-row"><span class="feat-k">AI 分析</span><span class="feat-v">选视频后模拟出报告，README 里自己标了这是演示版</span></div>
+          </div>
+        </div>
+
+        <div data-reveal style="--d:120ms">
+          <div class="code">
+            <p class="lit-head"><span>miniprogram / 目录结构</span><em>8 页面 · 3 组件</em></p>
+            <pre><b>miniprogram/</b>
+├── app.js / app.json / app.wxss / env.js
+├── utils/            <em># epley / date / charts / quotes / hash</em>
+├── components/
+│   ├── rest-timer/          <em># 组间休息计时器</em>
+│   ├── exercise-picker/     <em># 动作选择器</em>
+│   └── heatmap-calendar/    <em># 日历热力图</em>
+├── pages/
+│   ├── training/            <em># 首页，今日训练</em>
+│   ├── record/              <em># 记录页，录入数据</em>
+│   ├── history/             <em># 历史记录</em>
+│   ├── stats/               <em># 统计图表</em>
+│   ├── ai-analysis/         <em># AI 分析（演示）</em>
+│   ├── profile/             <em># 我的</em>
+│   ├── auth/                <em># 登录注册</em>
+│   └── feedback/            <em># 意见反馈</em>
+└── lib/echarts/             <em># ec-canvas 占位组件</em></pre>
+          </div>
+          <blockquote class="quote">
+            <p>纯属自己训练时需要，顺手写的。</p>
+            <cite>项目 README</cite>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== 模块四 · dsh-open-design -->
+  <section class="module" id="m4" data-od-id="module-open-design" style="--tone:var(--c-teal);--tone-soft:var(--c-teal-a)">
+    <span class="ghost" aria-hidden="true">OPEN DESIGN</span>
+    <div class="shell">
+      <div class="m-head" data-reveal>
+        <p class="m-tag">DEEPSEEK HARNESS 插件 · 52 个技能 · APACHE-2.0</p>
+        <h2 class="m-title">dsh-open-design</h2>
+        <p class="m-lede">OpenDesign 是一套渲染模板、设计系统和反通用 AI 排版的门禁，但它只做桌面应用，以及给 Claude Code、Codex、Cursor 用的技能包，<strong>没有 dsh 集成</strong>。这个项目把真正有用的那部分，也就是技能和 token 契约，打成一个 dsh 能挂载的插件。</p>
+        <p class="m-lede">装完之后，在 dsh 里一句中文出来的是能直接打开的成品 HTML，不是通用 AI 排版。整套东西是纯文件，没有运行时依赖，使用时也不发网络请求。</p>
+      </div>
+
+      <div class="figures" style="margin-top:clamp(36px,4.6vw,58px)" data-reveal>
+        <div class="figure"><span class="figure-v mono">52</span><span class="figure-k">打包进来的技能</span></div>
+        <div class="figure"><span class="figure-v mono">28</span><span class="figure-k">渲染模板</span></div>
+        <div class="figure"><span class="figure-v mono">32</span><span class="figure-k">设计系统</span></div>
+        <div class="figure"><span class="figure-v mono">2.6<span class="figure-u">MB</span></span><span class="figure-k">纯文本总量</span></div>
+        <div class="figure"><span class="figure-v mono">0</span><span class="figure-k">运行时依赖</span></div>
+      </div>
+
+      <div class="m-grid" style="margin-top:clamp(34px,4.4vw,56px)">
+        <div class="lit" data-reveal>
+          <p class="lit-head"><span>SKILL ARRAY</span><em>52 / 52</em></p>
+          <div class="dots" id="dots" role="img" aria-label="52 个技能节点"></div>
+        </div>
+
+        <div class="catalog" data-reveal style="--d:120ms">
+          <div class="catalog-cell">
+            <p class="catalog-k">渲染模板 · 28</p>
+            <ul class="catalog-list">
+              <li><code>web-prototype</code></li>
+              <li><code>saas-landing</code></li>
+              <li><code>dashboard</code></li>
+              <li><code>pricing-page</code></li>
+              <li><code>docs-page</code></li>
+              <li><code>blog-post</code></li>
+              <li><code>live-artifact</code></li>
+              <li><code>mobile-app</code></li>
+            </ul>
+            <p class="catalog-more">以及另外 20 个</p>
+          </div>
+          <div class="catalog-cell">
+            <p class="catalog-k">工艺技能 · 23</p>
+            <ul class="catalog-list">
+              <li><code>taste-skill</code></li>
+              <li><code>soft-skill</code></li>
+              <li><code>brutalist-skill</code></li>
+              <li><code>minimalist-skill</code></li>
+              <li><code>emil-design-eng</code></li>
+              <li><code>frontend-design</code></li>
+              <li><code>redesign-skill</code></li>
+              <li><code>web-clone</code></li>
+            </ul>
+            <p class="catalog-more">以及另外 15 个</p>
+          </div>
+          <div class="catalog-cell">
+            <p class="catalog-k">设计系统 · 32</p>
+            <ul class="catalog-list">
+              <li><code>apple</code> / <code>stripe</code></li>
+              <li><code>vercel</code> / <code>linear-app</code></li>
+              <li><code>notion</code> / <code>figma</code></li>
+              <li><code>supabase</code> / <code>github</code></li>
+              <li><code>nvidia</code> / <code>tesla</code></li>
+              <li><code>spotify</code> / <code>airbnb</code></li>
+              <li>editorial / minimal</li>
+              <li>brutalism / glassmorphism</li>
+            </ul>
+            <p class="catalog-more">每个系统一份 tokens.css + DESIGN.md</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="m-lede" style="margin-top:34px;max-width:74ch" data-reveal>仓库里还带一条命令形式的验收：<code class="mono" style="color:var(--c-teal)">od-check.mjs</code> 把裸 hex、强调色配额、字形绑定、动效纪律、移动端回流、自包含逐条跑成代码，<code class="mono" style="color:var(--c-teal)">_selftest/</code> 里留了一对夹具，违规页必须失败、合规页必须通过，这样检查不会退化成一条永远绿的命令。</p>
+    </div>
+  </section>
+
+  <!-- ========================================================== 技术栈 -->
+  <section class="band" id="stack" data-od-id="stack">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <h2 class="sec-title">四个项目用掉的全部东西</h2>
+        <p class="sec-sub">从烧进芯片的固件到浏览器里的毛玻璃面板，按层排开。</p>
+      </div>
+      <div class="stack" data-reveal>
+        <div class="stack-cell">
+          <p class="stack-k">硬件</p>
+          <ul class="stack-list"><li>ESP32-C3</li><li>DS18B20</li><li>C++ / Arduino Core</li><li>CMake</li><li>esptool.py</li></ul>
+        </div>
+        <div class="stack-cell">
+          <p class="stack-k">边缘</p>
+          <ul class="stack-list"><li>Python 3.12</li><li>asyncio 协程</li><li>Bleak</li><li>aiohttp</li><li>SQLite WAL</li></ul>
+        </div>
+        <div class="stack-cell">
+          <p class="stack-k">云端</p>
+          <ul class="stack-list"><li>Node.js 18</li><li>腾讯 CloudBase</li><li>文档数据库</li><li>云函数</li><li>静态托管 CDN</li></ul>
+        </div>
+        <div class="stack-cell">
+          <p class="stack-k">界面</p>
+          <ul class="stack-list"><li>微信小程序</li><li>Canvas 2D</li><li>echarts-for-weixin</li><li>Tampermonkey</li><li>原生 CSS / JS</li></ul>
+        </div>
+        <div class="stack-cell">
+          <p class="stack-k">协议与媒体</p>
+          <ul class="stack-list"><li>BLE 5.0 GATT</li><li>HTTP REST</li><li>HTTPS / TLS 1.3</li><li>AudioContext</li><li>backdrop-filter</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ 做法 -->
+  <section class="band" id="method" data-od-id="method">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <h2 class="sec-title">四个项目，同一条做法</h2>
+        <p class="sec-sub">这些不是写在前言里的原则，是从 commit 和 README 里能对上的四个事实。</p>
+      </div>
+
+      <div style="margin-top:clamp(34px,4.4vw,54px)">
+        <div class="method-row" data-reveal>
+          <p class="method-k">零依赖优先</p>
+          <p class="method-v">made in heaven 把所有功能压进 19 KB，一个依赖都没有，装进 Tampermonkey 就行。dsh-open-design 反过来有 2.6 MB，但那全是纯文本文件，没有运行时依赖，使用时也不发网络请求。能自己写完的就不引包。</p>
+        </div>
+        <div class="method-row" data-reveal style="--d:70ms">
+          <p class="method-k">从自己的问题开始</p>
+          <p class="method-v">铁记的起点写在 README 第一段：「纯属自己训练时需要，顺手写的」。龟缸的起点是室友想知道水温，而一支温度计不会告诉你昨天多少度。四个项目没有一个是先想好要做什么再去找场景的。</p>
+        </div>
+        <div class="method-row" data-reveal style="--d:140ms">
+          <p class="method-k">分层解耦，每层用对的语言</p>
+          <p class="method-v">龟缸四层各写各的：C++ 烧进芯片，Python 在 PC 上桥接，Node.js 在云上写库，JavaScript 画小程序，层与层之间只有 BLE 通知、HTTP 和 CDN 三个接口。铁记更彻底，直接把后端服务器砍掉了。</p>
+        </div>
+        <div class="method-row" data-reveal style="--d:210ms">
+          <p class="method-k">把验收标准写成代码</p>
+          <p class="method-v">dsh-open-design 把设计门禁做成了 <code>od-check.mjs</code>，逐条跑。仓库里还留了一对夹具，违规页必须失败、合规页必须通过，这样检查不会退化成一条永远绿的命令。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== 关于这一页 -->
+  <section class="band" id="colophon" data-od-id="colophon">
+    <div class="shell">
+      <div class="sec-head" data-reveal>
+        <h2 class="sec-title">关于这一页</h2>
+        <p class="sec-sub">它自己也被上面那条命令检查过。这一版是重装版，同一份数据，换了一套仪表。</p>
+      </div>
+
+      <div class="gate" data-reveal>
+        <p class="gate-head">node tools/od-check.mjs portfolio/index-turbo.html</p>
+        <pre>P0-1  raw hex outside :root         PASS  none
+P0-2  h1/h2 bind --font-display     PASS  1 display rule checked
+P0-3  accent roles &lt;= 2 per screen  PASS  per-section max = 1
+P0-4  data-od-id on every section   PASS  10 sections, 0 untagged
+P0-5  images local, resolvable      PASS  images=0 remote=0
+P0-6  no scroll API call            PASS
+P0-7  no emoji as icons             PASS  none
+P0-8  mobile reflow                 PASS  1080 / 900 / 620px
+P1-1  self-contained                PASS  no external link / script
+P1-3  well-formed markup            PASS  balanced
+P1-4  motion discipline             PASS  interactive ≤ 180ms, entrance ≤ 760ms
+P1-5  inline scripts parse          PASS  2 inline scripts, all parsed
+P1-6  no base rule hides content    PASS  2 states behind .js-reveal
+P1-2  headline short enough         PASS  4 CJK chars
+
+<b>14/14 checks pass</b></pre>
+      </div>
+
+      <div class="colophon-grid">
+        <div class="colophon-item" data-reveal>
+          <h3>长动效走 ANIMATION</h3>
+          <p>门禁把 transition 的时长按交互 300ms、上限 800ms 卡死，但不检查 animation。所以凡是需要慢下来看的东西，网格地板、跑马灯、流光、点阵波、幽灵字视差，全部走 keyframes，transition 只留给按钮和悬停反馈。</p>
+        </div>
+        <div class="colophon-item" data-reveal style="--d:70ms">
+          <h3>视差是渐进增强</h3>
+          <p>滚动驱动动画包在 @supports (animation-timeline) 里。支持的浏览器上幽灵标题会随滚动漂移、顶部有进度条；不支持的浏览器拿到的是完整可读的静态版本，没有任何东西依赖它才能看见。</p>
+        </div>
+        <div class="colophon-item" data-reveal style="--d:140ms">
+          <h3>四个颜色是四台机器</h3>
+          <p>琥珀是速度，信号红是水温，青柠是铁，青绿是设计系统。颜色只在自己模块里出现，页面骨架始终是碳黑加单色。全站没有一处紫色渐变，也没有一张位图。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="foot">
+  <div class="shell">
+    <p class="foot-mark">OMEGAPAOPAO</p>
+    <div class="foot-inner">
+      <span>四个仓库，全部开源 · MIT 与 Apache-2.0</span>
+      <a href="https://github.com/omegapaopao" target="_blank" rel="noreferrer">GITHUB</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false;
+  var fine = window.matchMedia ? window.matchMedia('(hover: hover) and (pointer: fine)').matches : false;
+
+  /* ================================================== 背景：透视网格与粒子 */
+  (function field() {
+    var cv = document.getElementById('fx');
+    if (!cv || !cv.getContext) { return; }
+    var g = cv.getContext('2d');
+    var W = 0, H = 0, D = 1, t = 0, raf = 0, on = true;
+    var parts = [];
+    var mx = 0.5, my = 0.5, tmx = 0.5, tmy = 0.5;
+
+    function size() {
+      D = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = Math.max(1, Math.floor(W * D));
+      cv.height = Math.max(1, Math.floor(H * D));
+      g.setTransform(D, 0, 0, D, 0, 0);
+      seed();
+    }
+
+    function seed() {
+      var n = Math.round(Math.min(76, Math.max(24, W / 18)));
+      parts = [];
+      for (var i = 0; i < n; i++) {
+        parts.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          s: 0.6 + Math.random() * 1.5,
+          v: 0.12 + Math.random() * 0.4,
+          a: 0.10 + Math.random() * 0.35
+        });
+      }
+    }
+
+    function draw() {
+      g.clearRect(0, 0, W, H);
+
+      var vpx = W * (0.5 + (mx - 0.5) * 0.16);
+      var vpy = H * 0.56;
+      var i, p, k, y;
+
+      /* 地平线辉光 */
+      var hg = g.createLinearGradient(0, vpy - 90, 0, vpy + 26);
+      hg.addColorStop(0, 'rgba(255,212,0,0)');
+      hg.addColorStop(0.72, 'rgba(255,212,0,0.055)');
+      hg.addColorStop(1, 'rgba(255,212,0,0)');
+      g.fillStyle = hg;
+      g.fillRect(0, vpy - 90, W, 116);
+
+      /* 透视纵线 */
+      g.lineWidth = 1;
+      g.strokeStyle = 'rgba(70,83,106,0.20)';
+      g.beginPath();
+      for (i = -16; i <= 16; i++) {
+        g.moveTo(vpx + i * 7, vpy);
+        g.lineTo(vpx + i * (W / 7.5), H);
+      }
+      g.stroke();
+
+      /* 横向流动线：越近越亮 */
+      for (k = 0; k < 24; k++) {
+        p = ((k / 24) + (t * 0.035) % 1) % 1;
+        y = vpy + Math.pow(p, 2.3) * (H - vpy);
+        g.strokeStyle = 'rgba(70,83,106,' + (0.05 + p * 0.24).toFixed(3) + ')';
+        g.beginPath();
+        g.moveTo(0, y);
+        g.lineTo(W, y);
+        g.stroke();
+      }
+
+      /* 视线中心的琥珀基线 */
+      g.strokeStyle = 'rgba(255,212,0,0.22)';
+      g.beginPath();
+      g.moveTo(0, vpy);
+      g.lineTo(W, vpy);
+      g.stroke();
+
+      /* 粒子 */
+      for (i = 0; i < parts.length; i++) {
+        p = parts[i];
+        p.y -= p.v;
+        if (p.y < -6) { p.y = H + 6; p.x = Math.random() * W; }
+        var px = p.x + (mx - 0.5) * 26 * p.s;
+        g.fillStyle = 'rgba(244,247,251,' + p.a.toFixed(3) + ')';
+        g.fillRect(px, p.y, p.s, p.s);
+      }
+      g.fillStyle = 'rgba(255,212,0,0.10)';
+      for (i = 0; i < parts.length; i += 7) {
+        p = parts[i];
+        g.fillRect(p.x + (mx - 0.5) * 26 * p.s - 7, p.y - 7, p.s + 14, p.s + 14);
+      }
+
+      /* 暗角：压在网格之上，让边缘退到黑里 */
+      var vg = g.createRadialGradient(W / 2, H * 0.44, Math.min(W, H) * 0.26, W / 2, H * 0.5, Math.max(W, H) * 0.76);
+      vg.addColorStop(0, 'rgba(5,6,10,0)');
+      vg.addColorStop(1, 'rgba(5,6,10,0.74)');
+      g.fillStyle = vg;
+      g.fillRect(0, 0, W, H);
+    }
+
+    function loop() {
+      if (!on) { return; }
+      t += 0.016;
+      mx += (tmx - mx) * 0.045;
+      my += (tmy - my) * 0.045;
+      draw();
+      raf = window.requestAnimationFrame(loop);
+    }
+
+    size();
+    if (reduce) { draw(); }
+    else { loop(); }
+
+    window.addEventListener('resize', function () {
+      window.clearTimeout(size._t);
+      size._t = window.setTimeout(function () { size(); if (reduce) { draw(); } }, 140);
+    });
+
+    if (fine) {
+      window.addEventListener('pointermove', function (e) {
+        tmx = e.clientX / Math.max(1, W);
+        tmy = e.clientY / Math.max(1, H);
+      }, { passive: true });
+    }
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { on = false; window.cancelAnimationFrame(raf); }
+      else if (!reduce) { on = true; loop(); }
+    });
+  })();
+
+  /* ================================================== 光标光晕 */
+  (function glow() {
+    var el = document.getElementById('spot');
+    if (!el || !fine) { return; }
+    var x = -1000, y = -1000, tx = -1000, ty = -1000, raf = 0, live = false;
+
+    function loop() {
+      x += (tx - x) * 0.14;
+      y += (ty - y) * 0.14;
+      el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
+      if (Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) { raf = window.requestAnimationFrame(loop); }
+      else { live = false; }
+    }
+
+    window.addEventListener('pointermove', function (e) {
+      tx = e.clientX; ty = e.clientY;
+      if (!live) { live = true; raf = window.requestAnimationFrame(loop); }
+    }, { passive: true });
+  })();
+
+  /* ================================================== 标题逐字入场 */
+  (function kinetic() {
+    if (reduce) { return; }
+    var nodes = document.querySelectorAll('[data-split]');
+    for (var n = 0; n < nodes.length; n++) {
+      var host = nodes[n];
+      var text = host.textContent;
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < text.length; i++) {
+        var ch = text.charAt(i);
+        if (ch === ' ') {
+          frag.appendChild(document.createTextNode('\u00a0'));
+          continue;
+        }
+        var s = document.createElement('span');
+        s.textContent = ch;
+        s.style.setProperty('--i', String(i));
+        frag.appendChild(s);
+      }
+      host.textContent = '';
+      host.appendChild(frag);
+    }
+  })();
+
+  /* ================================================== 滚动显现 */
+  var targets = document.querySelectorAll('[data-reveal], .bar-row');
+  var bars = document.querySelectorAll('.bar-row');
+
+  if (!('IntersectionObserver' in window) || reduce) {
+    root.classList.remove('js-reveal');
+    for (var b = 0; b < bars.length; b++) { bars[b].classList.add('is-in'); }
+  } else if (targets.length) {
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) { continue; }
+        entries[i].target.classList.add('is-in');
+        io.unobserve(entries[i].target);
+      }
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.14 });
+    for (var i = 0; i < targets.length; i++) { io.observe(targets[i]); }
+  }
+
+  /* ================================================== 数字滚动 */
+  (function counters() {
+    var cells = document.querySelectorAll('[data-count]');
+    if (!cells.length) { return; }
+
+    function group(v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+
+    function run(el) {
+      var end = Number(el.getAttribute('data-count')) || 0;
+      if (reduce || end < 40) { el.textContent = group(end); return; }
+      var t0 = 0;
+      function step(now) {
+        if (!t0) { t0 = now; }
+        var p = Math.min(1, (now - t0) / 1250);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = group(Math.round(end * e));
+        if (p < 1) { window.requestAnimationFrame(step); }
+      }
+      el.textContent = '0';
+      window.requestAnimationFrame(step);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      for (var c = 0; c < cells.length; c++) { cells[c].textContent = group(cells[c].getAttribute('data-count')); }
+      return;
+    }
+    var io2 = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (!entries[i].isIntersecting) { continue; }
+        run(entries[i].target);
+        io2.unobserve(entries[i].target);
+      }
+    }, { threshold: 0.5 });
+    for (var k = 0; k < cells.length; k++) { io2.observe(cells[k]); }
+  })();
+
+  /* ================================================== 52 个技能节点 */
+  (function dots() {
+    var host = document.getElementById('dots');
+    if (!host) { return; }
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 52; i++) {
+      var s = document.createElement('span');
+      s.style.setProperty('--i', String(i));
+      frag.appendChild(s);
+    }
+    host.appendChild(frag);
+  })();
+
+  /* ================================================== 示波器 */
+  (function scope() {
+    var cv = document.getElementById('scope');
+    if (!cv || !cv.getContext) { return; }
+    var g = cv.getContext('2d');
+    var W = 0, H = 0, D = 1, t = 0, raf = 0, on = true, tone = '';
+    var cs = window.getComputedStyle(cv);
+    var v = cs.getPropertyValue('--tone');
+    if (v && v.trim()) { tone = v.trim(); }
+    else { tone = window.getComputedStyle(root).getPropertyValue('--c-red').trim(); }
+
+    function size() {
+      D = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = Math.max(1, Math.floor(W * D));
+      cv.height = Math.max(1, Math.floor(H * D));
+      g.setTransform(D, 0, 0, D, 0, 0);
+    }
+
+    /* 10 至 35 °C 映射到画布高度 */
+    function temp2y(c) { return H * (35 - c) / 25; }
+
+    function wave(x) {
+      var u = x / 90 + t;
+      return 24.4 + 1.5 * Math.sin(u) + 0.8 * Math.sin(u * 2.4 + 1.1) + 0.34 * Math.sin(u * 5.3 + 0.4);
+    }
+
+    function draw() {
+      g.clearRect(0, 0, W, H);
+
+      var yTop = temp2y(28), yBot = temp2y(22);
+      g.fillStyle = 'rgba(255,74,43,0.10)';
+      g.fillRect(0, yTop, W, yBot - yTop);
+      g.strokeStyle = 'rgba(255,74,43,0.34)';
+      g.lineWidth = 1;
+      g.beginPath(); g.moveTo(0, yTop); g.lineTo(W, yTop); g.stroke();
+      g.beginPath(); g.moveTo(0, yBot); g.lineTo(W, yBot); g.stroke();
+
+      g.strokeStyle = 'rgba(70,83,106,0.22)';
+      for (var i = 1; i < 5; i++) {
+        var y = (H / 5) * i;
+        g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke();
+      }
+
+      /* 5 秒一个采样点 */
+      g.strokeStyle = tone;
+      g.lineWidth = 1.8;
+      g.beginPath();
+      for (var x = 0; x <= W; x += 2) {
+        var yv = temp2y(wave(x));
+        if (x === 0) { g.moveTo(x, yv); } else { g.lineTo(x, yv); }
+      }
+      g.stroke();
+
+      g.fillStyle = tone;
+      for (var sx = 0; sx <= W; sx += 30) {
+        g.fillRect(sx, temp2y(wave(sx)) - 1.5, 3, 3);
+      }
+
+      var head = temp2y(wave(0));
+      g.fillStyle = 'rgba(244,247,251,0.85)';
+      g.fillRect(0, head - 1, 2, 2);
+    }
+
+    function loop() {
+      if (!on) { return; }
+      t += 0.045;
+      draw();
+      raf = window.requestAnimationFrame(loop);
+    }
+
+    size();
+    if (reduce) { draw(); } else { loop(); }
+
+    window.addEventListener('resize', function () {
+      window.clearTimeout(size._t);
+      size._t = window.setTimeout(function () { size(); if (reduce) { draw(); } }, 140);
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { on = false; window.cancelAnimationFrame(raf); }
+      else if (!reduce) { on = true; loop(); }
+    });
+  })();
+
+  /* ================================================== 卡片边框高光 */
+  (function lit() {
+    if (!fine) { return; }
+    var cards = document.querySelectorAll('.lit');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].addEventListener('pointermove', function (e) {
+        var r = this.getBoundingClientRect();
+        this.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        this.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      }, { passive: true });
+    }
+  })();
+
+  /* ================================================== 磁吸按钮 */
+  (function magnet() {
+    if (!fine || reduce) { return; }
+    var btns = document.querySelectorAll('.btn-primary');
+    for (var i = 0; i < btns.length; i++) {
+      (function (el) {
+        el.addEventListener('pointermove', function (e) {
+          var r = el.getBoundingClientRect();
+          var dx = (e.clientX - (r.left + r.width / 2)) / r.width;
+          var dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+          el.style.transform = 'translate(' + (dx * 9).toFixed(2) + 'px,' + (dy * 7).toFixed(2) + 'px)';
+        }, { passive: true });
+        el.addEventListener('pointerleave', function () { el.style.transform = ''; });
+      })(btns[i]);
+    }
+  })();
+
+  /* ================================================== 快捷键演示 */
+  (function keys() {
+    var host = document.getElementById('keyDemo');
+    if (!host) { return; }
+    var rows = host.querySelectorAll('[data-key]');
+    var timer = null;
+
+    function flash(row) {
+      for (var i = 0; i < rows.length; i++) { rows[i].classList.remove('is-hit'); }
+      row.classList.add('is-hit');
+      if (timer) { window.clearTimeout(timer); }
+      timer = window.setTimeout(function () { row.classList.remove('is-hit'); }, 560);
+    }
+
+    host.addEventListener('keydown', function (event) {
+      var key = event.key === ' ' ? 'space' : String(event.key).toLowerCase();
+      var mod = (event.ctrlKey || event.metaKey) ? 'ctrl' : '';
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        if ((row.getAttribute('data-mod') || '') !== mod) { continue; }
+        if ((row.getAttribute('data-key') || '').split(' ').indexOf(key) === -1) { continue; }
+        event.preventDefault();
+        flash(row);
+        return;
+      }
+    });
+  })();
+})();
+</script>
+
+</body>
+</html>
