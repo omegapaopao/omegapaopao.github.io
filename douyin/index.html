@@ -1,0 +1,1714 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#050506" />
+<meta name="description" content="Omega泡泡怪「玩AI版」——19 岁 AI 创作者，DeepSeek Harness 与 vibe coding 内容，25 条作品 146.3 万播放。" />
+<link rel="canonical" href="https://omegapaopao.github.io/douyin/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Omega泡泡怪「玩AI版」" />
+<meta property="og:title" content="Omega泡泡怪「玩AI版」· AI 创作者作品集" />
+<meta property="og:description" content="19 岁大二在读，用 AI 工具把想法做成能跑的东西。21 天 25 条作品，累计 146.3 万播放，单条最高 43.5 万。" />
+<meta property="og:url" content="https://omegapaopao.github.io/douyin/" />
+<meta property="og:image" content="https://omegapaopao.github.io/douyin/assets/og.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Omega泡泡怪「玩AI版」· AI 创作者作品集" />
+<meta name="twitter:description" content="21 天 25 条作品，累计 146.3 万播放。DeepSeek Harness 与 vibe coding 内容。" />
+<meta name="twitter:image" content="https://omegapaopao.github.io/douyin/assets/og.jpg" />
+<title>Omega泡泡怪「玩AI版」· AI 创作者作品集</title>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+@font-face{font-family:'Space Grotesk';src:url('assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Space Grotesk';src:url('assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Sora';src:url('assets/fonts/sora-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Sora';src:url('assets/fonts/sora-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+
+:root{
+  --bg:#050506; --bg-2:#0a0b10;
+  --surface:#0e1015; --surface-hi:#15181f; --surface-lo:#0a0c11;
+  --fg:#f4f6fa; --fg-2:#c2c8d6; --muted:#868ea3; --dim:#5d6577;
+  --line:rgba(255,255,255,.09); --line-soft:rgba(255,255,255,.05);
+  --accent:#4d6bfe; --accent-hi:#7c9bff; --accent-soft:rgba(77,107,254,.15);
+  --on-accent:#ffffff; --shell:rgba(255,255,255,.028); --mask:#000;
+  --font-display:'Space Grotesk','Noto Sans SC','Microsoft YaHei UI',system-ui,sans-serif;
+  --font-body:'Sora','Noto Sans SC','Microsoft YaHei UI',system-ui,sans-serif;
+  --font-mono:'Cascadia Mono',ui-monospace,'SF Mono',Consolas,monospace;
+  --ease:cubic-bezier(.32,.72,0,1); --ease-soft:cubic-bezier(.22,1,.36,1);
+  --r-lg:26px; --r-md:18px;
+  --pad-x:clamp(20px,4vw,44px);
+  --sec-y:clamp(72px,8.5vw,124px);
+  --maxw:1200px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;
+  line-height:1.68;letter-spacing:-.003em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+p{margin:0;text-wrap:pretty}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--font-display);font-weight:700}
+::selection{background:var(--accent-soft);color:var(--fg)}
+
+/* ── 背景层 ─────────────────────────────────────────── */
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(56vw 56vw at 80% 2%, rgba(77,107,254,.20), transparent 62%),
+    radial-gradient(44vw 44vw at 4% 26%, rgba(38,208,235,.09), transparent 66%),
+    radial-gradient(72vw 44vw at 50% 106%, rgba(77,107,254,.12), transparent 70%)}
+.spot{position:fixed;left:0;top:0;width:560px;height:560px;border-radius:999px;z-index:0;pointer-events:none;
+  background:radial-gradient(circle, rgba(96,132,255,.11), transparent 62%);
+  transform:translate3d(-50%,-50%,0);opacity:0;transition:opacity .7s var(--ease)}
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.032;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1}
+.container{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad-x);width:100%}
+.sec{padding-block:var(--sec-y);position:relative}
+
+/* ── 进度条 ─────────────────────────────────────────── */
+.progress{position:fixed;top:0;left:0;height:2px;z-index:90;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent-hi));box-shadow:0 0 14px rgba(77,107,254,.8)}
+
+/* ── 导航 ───────────────────────────────────────────── */
+.navbar{position:fixed;top:16px;left:0;right:0;z-index:80;display:flex;justify-content:center;padding-inline:16px;pointer-events:none}
+.nav{pointer-events:auto;display:flex;align-items:center;gap:clamp(8px,1.6vw,20px);
+  padding:8px 8px 8px 18px;border-radius:999px;border:1px solid var(--line-soft);
+  background:color-mix(in oklab,var(--bg-2) 74%,transparent);
+  backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  transition:background .6s var(--ease),border-color .6s var(--ease),box-shadow .6s var(--ease)}
+.nav.scrolled{background:color-mix(in oklab,var(--bg-2) 90%,transparent);border-color:var(--line);box-shadow:0 18px 50px -24px rgba(0,0,0,.95)}
+.nav .brand{font-family:var(--font-display);font-weight:700;font-size:14.5px;white-space:nowrap;display:flex;align-items:center;gap:9px}
+.nav .brand img{width:24px;height:24px;border-radius:999px;border:1px solid var(--line)}
+.nav .links{display:flex;gap:4px;position:relative}
+.nav .links a{font-size:13px;color:var(--muted);padding:7px 13px;border-radius:999px;position:relative;
+  transition:color .4s var(--ease),background .4s var(--ease)}
+.nav .links a:hover{color:var(--fg)}
+.nav .links a.on{color:var(--fg);background:rgba(255,255,255,.06)}
+.nav .cta{font-size:13px;padding:9px 17px;border-radius:999px;border:1px solid var(--line);white-space:nowrap;
+  transition:border-color .4s var(--ease),background .4s var(--ease),transform .4s var(--ease)}
+.nav .cta:hover{border-color:var(--accent);background:var(--accent-soft);transform:translateY(-1px)}
+.nav-toggle{display:none;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);position:relative;pointer-events:auto}
+.nav-toggle i{position:absolute;left:11px;width:18px;height:1.5px;background:var(--fg);border-radius:2px;
+  transition:transform .55s var(--ease),opacity .35s var(--ease)}
+.nav-toggle i:nth-child(1){top:16px}
+.nav-toggle i:nth-child(2){top:22px}
+.nav-toggle.open i:nth-child(1){transform:translateY(3px) rotate(45deg)}
+.nav-toggle.open i:nth-child(2){transform:translateY(-3px) rotate(-45deg)}
+.overlay{position:fixed;inset:0;z-index:75;background:color-mix(in oklab,var(--bg) 95%,transparent);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);display:flex;flex-direction:column;
+  justify-content:center;gap:4px;padding:0 var(--pad-x);opacity:0;visibility:hidden;
+  transition:opacity .55s var(--ease),visibility .55s var(--ease)}
+.overlay.open{opacity:1;visibility:visible}
+.overlay a{font-family:var(--font-display);font-size:clamp(26px,7.5vw,40px);font-weight:700;padding-block:11px;
+  border-bottom:1px solid var(--line-soft);opacity:0;transform:translateY(28px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.overlay.open a{opacity:1;transform:none}
+.overlay.open a:nth-child(1){transition-delay:.05s}.overlay.open a:nth-child(2){transition-delay:.1s}
+.overlay.open a:nth-child(3){transition-delay:.15s}.overlay.open a:nth-child(4){transition-delay:.2s}
+.overlay.open a:nth-child(5){transition-delay:.25s}.overlay.open a:nth-child(6){transition-delay:.3s}
+@media (max-width:940px){.nav .links{display:none}.nav .cta{display:none}
+  .nav{padding:5px 5px 5px 14px}.nav-toggle{display:block}}
+
+/* ── 双包边 ─────────────────────────────────────────── */
+.shell{background:var(--shell);border:1px solid var(--line-soft);padding:6px;border-radius:var(--r-lg);
+  transition:border-color .6s var(--ease),background .6s var(--ease),transform .6s var(--ease)}
+.core{background:linear-gradient(180deg,var(--surface-hi),var(--surface));border-radius:calc(var(--r-lg) - 6px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06);height:100%;overflow:hidden;position:relative}
+.shell.lift:hover{transform:translateY(-4px);border-color:var(--line)}
+.shell.glow{position:relative;overflow:hidden}
+.shell.glow::before{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;
+  background:radial-gradient(300px circle at var(--mx,50%) var(--my,0%), rgba(124,155,255,.13), transparent 62%);
+  opacity:0;transition:opacity .5s var(--ease)}
+.shell.glow:hover::before{opacity:1}
+
+/* ── 类型 ───────────────────────────────────────────── */
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--accent-hi);border:1px solid var(--accent-soft);
+  background:var(--accent-soft);border-radius:999px;padding:6px 13px}
+.h1{font-size:clamp(38px,5.6vw,74px);line-height:1.07;letter-spacing:-.032em}
+.h2{font-size:clamp(27px,3.4vw,44px);line-height:1.18;letter-spacing:-.024em}
+.h3{font-size:17px;line-height:1.5}
+.lead{font-size:16.5px;line-height:1.8;color:var(--fg-2);max-width:62ch}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.sec-head{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(28px,3.4vw,46px)}
+.grid{display:grid;gap:clamp(13px,1.6vw,20px)}
+
+/* ── 按钮 ───────────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:13px;border-radius:999px;padding:12px 12px 12px 24px;
+  font-size:15px;font-weight:700;font-family:var(--font-display);border:1px solid transparent;
+  transition:transform .45s var(--ease),background .45s var(--ease),border-color .45s var(--ease),box-shadow .45s var(--ease)}
+.btn .ico{width:32px;height:32px;border-radius:999px;display:grid;place-items:center;flex:0 0 32px;
+  background:rgba(255,255,255,.15);transition:transform .55s var(--ease),background .45s var(--ease)}
+.btn .ico svg{width:12px;height:12px}
+.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:0 20px 44px -22px rgba(77,107,254,.95)}
+.btn-primary:hover{background:var(--accent-hi);box-shadow:0 26px 54px -22px rgba(77,107,254,1)}
+.btn-primary:hover .ico{transform:translate(3px,-2px) scale(1.07);background:rgba(255,255,255,.26)}
+.btn-primary:active{transform:scale(.985)}
+.btn-plain{display:inline-flex;align-items:center;gap:9px;padding:12px 4px;font-size:14.5px;font-family:var(--font-display);
+  font-weight:700;color:var(--fg-2);transition:color .4s var(--ease),gap .4s var(--ease)}
+.btn-plain:hover{color:var(--fg);gap:14px}
+.btn-plain svg{width:12px;height:12px}
+
+/* ── Hero ───────────────────────────────────────────── */
+.hero{padding-top:clamp(132px,14vw,190px);padding-bottom:clamp(40px,5vw,64px)}
+.hero-grid{display:grid;grid-template-columns:1.24fr .76fr;gap:clamp(28px,4.4vw,64px);align-items:center}
+.hero h1{margin-block:22px 18px}
+.hero .lead{margin-bottom:30px}
+.hero-actions{display:flex;align-items:center;gap:clamp(10px,1.8vw,22px);flex-wrap:wrap}
+.figures{display:flex;gap:26px;flex-wrap:wrap;margin-top:38px;padding-top:22px;border-top:1px solid var(--line-soft)}
+.fig{display:flex;flex-direction:column;gap:2px}
+.fig b{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.02em}
+.fig span{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.pcard{padding:26px 24px 22px;text-align:center}
+.pcard .av{width:92px;height:92px;border-radius:999px;margin:4px auto 16px;object-fit:cover;
+  border:1px solid var(--line);box-shadow:0 18px 40px -18px rgba(0,0,0,.9)}
+.pcard .nm{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:-.015em}
+.pcard .idrow{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.pcard .id{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.copy{border:1px solid var(--line-soft);border-radius:999px;padding:3px 9px;font-family:var(--font-mono);font-size:10px;
+  color:var(--muted);transition:all .4s var(--ease)}
+.copy:hover{color:var(--fg);border-color:var(--accent);background:var(--accent-soft)}
+.pcard .tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:18px}
+.pcard .stats{display:flex;justify-content:space-around;margin-top:20px;padding-top:18px;border-top:1px solid var(--line-soft)}
+.pcard .stats div{display:flex;flex-direction:column;gap:1px}
+.pcard .stats b{font-family:var(--font-display);font-size:16px;font-weight:700}
+.pcard .stats span{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tshell{transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s var(--ease-soft)}
+/* 跟手倾斜（多张卡片共用） */
+.tilt{transform:perspective(1100px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translate3d(0,0,0);
+  transition:transform .5s var(--ease-soft)}
+/* 跟手高光扫过 */
+.sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;opacity:0;
+  background:linear-gradient(112deg,transparent 40%,rgba(255,255,255,.075) 50%,transparent 60%);
+  background-size:260% 260%;background-position:var(--sx,50%) var(--sy,50%);
+  transition:opacity .55s var(--ease)}
+.shell.glow:hover .sheen{opacity:1}
+.tag{display:inline-flex;align-items:center;padding:5px 11px;border:1px solid var(--line-soft);border-radius:999px;
+  font-size:11.5px;color:var(--fg-2);background:rgba(255,255,255,.02);transition:border-color .4s var(--ease),color .4s var(--ease)}
+.tag:hover{border-color:var(--accent);color:var(--fg)}
+@media (max-width:940px){.hero-grid{grid-template-columns:1fr;gap:38px}}
+
+/* ── 跑马灯 ─────────────────────────────────────────── */
+.marquee{overflow:hidden;border-block:1px solid var(--line-soft);padding-block:18px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,var(--mask) 8%,var(--mask) 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,var(--mask) 8%,var(--mask) 92%,transparent)}
+.marquee .track{display:flex;gap:34px;width:max-content;animation:mq 46s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.marquee span{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--dim);white-space:nowrap;
+  display:flex;align-items:center;gap:34px;transition:color .4s var(--ease)}
+.marquee span::after{content:'';width:4px;height:4px;border-radius:999px;background:var(--accent);opacity:.8}
+.marquee span:hover{color:var(--fg)}
+@keyframes mq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+/* ── 看板 bento ─────────────────────────────────────── */
+.board{grid-template-columns:repeat(4,1fr)}
+.board .cell{padding:clamp(18px,2vw,26px);display:flex;flex-direction:column;min-height:132px}
+.board .cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.board .big{font-family:var(--font-display);font-size:clamp(30px,3.4vw,46px);font-weight:700;line-height:1;
+  letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin-top:auto}
+.board .big i{font-style:normal;font-size:.42em;color:var(--muted);margin-left:3px}
+.board .sub{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.board .wide2{grid-column:span 2}.board .wide3{grid-column:span 3}.board .tall2{grid-row:span 2}
+.grow-grid{grid-template-columns:repeat(3,1fr)}
+@media (max-width:940px){.board{grid-template-columns:repeat(2,1fr)}.board .wide3{grid-column:span 2}}
+@media (max-width:560px){.board{grid-template-columns:1fr}.board .wide2,.board .wide3{grid-column:span 1}}
+
+/* ── 柱状图 ─────────────────────────────────────────── */
+.chart{display:flex;align-items:flex-end;gap:3px;height:96px;margin-top:16px}
+.chart .b{flex:1;height:100%;border-radius:3px 3px 1px 1px;transform-origin:bottom;transform:scaleY(var(--v));
+  background:linear-gradient(180deg,var(--accent-hi),color-mix(in oklab,var(--accent) 45%,transparent));
+  transition:filter .35s var(--ease),opacity .35s var(--ease);position:relative;cursor:default;min-height:2px}
+.chart .b.dim{opacity:.35}
+.chart .b:hover,.chart .b.hi{filter:brightness(1.5)}
+.chart .b::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(5px);
+  background:var(--surface-hi);border:1px solid var(--line);color:var(--fg);font-family:var(--font-mono);font-size:10.5px;
+  padding:5px 9px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .3s var(--ease);z-index:3}
+.chart .b:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+.hours{display:flex;align-items:flex-end;gap:2px;height:56px;margin-top:14px}
+.hours .hb{flex:1;height:100%;transform-origin:bottom;transform:scaleY(var(--v));border-radius:2px;
+  background:rgba(255,255,255,.16);transition:background .35s var(--ease)}
+.hours .hb.on{background:var(--accent)}
+.hours .hb:hover{background:var(--accent-hi)}
+.axis{display:flex;gap:2px;margin-top:6px}
+.axis span{flex:1;text-align:center;font-family:var(--font-mono);font-size:8.5px;color:var(--dim)}
+
+/* ── 对比 ───────────────────────────────────────────── */
+.delta{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.delta .from{font-family:var(--font-mono);font-size:14px;color:var(--dim);text-decoration:line-through;text-decoration-color:var(--dim)}
+.delta .arrow{color:var(--accent-hi);font-size:13px}
+.delta .to{font-family:var(--font-display);font-size:clamp(26px,3vw,38px);font-weight:700;letter-spacing:-.03em}
+.delta .up{font-family:var(--font-mono);font-size:11.5px;color:var(--accent-hi);border:1px solid var(--accent-soft);
+  background:var(--accent-soft);border-radius:999px;padding:4px 10px}
+
+/* ── 合集 ───────────────────────────────────────────── */
+.colls{grid-template-columns:1fr 1fr 1fr}
+.colls .cell{padding:clamp(20px,2.4vw,28px);display:flex;flex-direction:column;min-height:196px}
+.colls .nm{font-family:var(--font-display);font-size:17px;font-weight:700;line-height:1.45}
+.colls .ep{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+.colls .n{font-family:var(--font-display);font-size:clamp(30px,3.6vw,44px);font-weight:700;letter-spacing:-.04em;margin-top:auto;line-height:1}
+.colls .n i{font-style:normal;font-size:.44em;color:var(--muted);margin-left:3px}
+.colls .bar{height:3px;border-radius:3px;background:var(--accent);margin-top:14px;transform-origin:left;
+  transform:scaleX(var(--w,1));opacity:.85}
+
+/* ── 作品 ───────────────────────────────────────────── */
+.feat{display:grid;grid-template-columns:minmax(0,.5fr) minmax(0,1fr);gap:clamp(18px,2.6vw,36px);align-items:center;
+  padding:clamp(16px,2vw,24px);cursor:pointer}
+.feat .thumb{border-radius:var(--r-md);overflow:hidden;position:relative;background:var(--bg-2)}
+.feat .thumb img{width:100%;height:auto;transition:transform .9s var(--ease)}
+.feat:hover .thumb img{transform:scale(1.035)}
+.feat .play{font-family:var(--font-display);font-size:clamp(34px,4.4vw,58px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.feat .play i{font-style:normal;font-size:.42em;color:var(--muted);margin-left:4px}
+.feat h3{margin-top:14px;font-size:clamp(16px,1.4vw,19px);line-height:1.55;max-width:34ch}
+.feat .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.works{grid-template-columns:repeat(3,1fr)}
+.work{display:flex;flex-direction:column;height:100%;cursor:pointer}
+.work .thumbwrap{aspect-ratio:323/430;overflow:hidden;background:var(--bg-2);position:relative}
+.work .thumbwrap img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),filter .9s var(--ease)}
+.work:hover .thumbwrap img{transform:scale(1.06)}
+.work .thumbwrap::after{content:'';position:absolute;inset:auto 0 0 0;height:54%;
+  background:linear-gradient(to top,rgba(5,5,6,.94),transparent);opacity:.92;transition:opacity .7s var(--ease)}
+.work:hover .thumbwrap::after{opacity:.6}
+.work .play-badge{position:absolute;left:13px;bottom:12px;z-index:2;font-family:var(--font-mono);font-size:12.5px;
+  font-weight:700;display:flex;align-items:center;gap:6px}
+.work .play-badge svg{width:11px;height:11px;opacity:.85}
+.work .rank{position:absolute;right:12px;top:12px;z-index:2;font-family:var(--font-mono);font-size:10px;
+  letter-spacing:.1em;color:var(--fg);background:rgba(5,5,6,.66);border:1px solid var(--line-soft);
+  border-radius:999px;padding:4px 9px}
+.work .info{padding:15px 17px 17px;display:flex;flex-direction:column;gap:8px;flex:1}
+.work .t{font-size:13.5px;font-weight:700;font-family:var(--font-display);line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.work .d{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.06em;margin-top:auto;
+  display:flex;justify-content:space-between;gap:10px}
+@media (max-width:940px){.feat{grid-template-columns:1fr;gap:16px}.works{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.works{grid-template-columns:1fr}}
+
+/* ── 作品列表 ───────────────────────────────────────── */
+.bar-tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.seg{display:inline-flex;padding:3px;border:1px solid var(--line-soft);border-radius:999px;background:rgba(255,255,255,.02);flex-wrap:wrap}
+.seg button{padding:7px 14px;border-radius:999px;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);
+  transition:color .35s var(--ease),background .35s var(--ease)}
+.seg button:hover{color:var(--fg)}
+.seg button.on{background:var(--accent-soft);color:var(--fg)}
+.searchbox{display:flex;align-items:center;gap:9px;border:1px solid var(--line-soft);border-radius:999px;
+  padding:8px 15px;background:rgba(255,255,255,.02);transition:border-color .4s var(--ease);min-width:220px}
+.searchbox:focus-within{border-color:var(--accent)}
+.searchbox svg{width:13px;height:13px;color:var(--muted);flex:0 0 13px}
+.searchbox input{background:none;border:0;outline:0;color:var(--fg);font-size:13px;width:100%}
+.searchbox input::placeholder{color:var(--dim)}
+.list{border-top:1px solid var(--line-soft)}
+.row{display:grid;grid-template-columns:96px minmax(0,1fr) 108px 62px;gap:clamp(12px,2vw,26px);align-items:baseline;
+  padding:15px clamp(0px,.8vw,12px);border-bottom:1px solid var(--line-soft);cursor:pointer;
+  transition:background .45s var(--ease),padding .45s var(--ease)}
+.row:hover{background:linear-gradient(90deg,rgba(255,255,255,.05),transparent 72%);padding-left:clamp(8px,1.4vw,20px)}
+.row.hide{display:none}
+.row .d{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.04em}
+.row .t{font-family:var(--font-display);font-size:14.5px;font-weight:700;line-height:1.5;transition:color .4s var(--ease)}
+.row:hover .t{color:var(--accent-hi)}
+.row .tg{display:flex;gap:5px;flex-wrap:wrap}
+.row .tg i{font-style:normal;font-family:var(--font-mono);font-size:9.5px;color:var(--dim);
+  border:1px solid var(--line-soft);border-radius:999px;padding:2px 7px}
+.row .p{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--fg-2)}
+@media (max-width:940px){.row{grid-template-columns:76px minmax(0,1fr) 66px}.row .tg{display:none}}
+.empty{padding:40px 0;text-align:center;color:var(--dim);font-family:var(--font-mono);font-size:12.5px}
+.peek{position:fixed;z-index:70;width:132px;border-radius:12px;overflow:hidden;pointer-events:none;
+  border:1px solid var(--line);box-shadow:0 26px 60px -20px rgba(0,0,0,.95);opacity:0;transform:translate3d(0,0,0) scale(.94);
+  transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.peek.on{opacity:1;transform:translate3d(0,0,0) scale(1)}
+.peek img{width:100%;display:block}
+
+/* ── 关于 ───────────────────────────────────────────── */
+.about{display:grid;grid-template-columns:1.3fr .7fr;gap:clamp(24px,3.6vw,56px);align-items:start}
+.bio{margin:26px 0 0;padding:0;border-top:1px solid var(--line-soft)}
+.bio li{list-style:none;display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-soft);font-size:14px;color:var(--fg-2)}
+.bio li .i{font-family:var(--font-mono);font-size:10.5px;color:var(--accent-hi);flex:0 0 20px;padding-top:3px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.6vw,18px)}
+.steps .cell{padding:clamp(18px,2vw,24px)}
+.steps .no{font-family:var(--font-mono);font-size:11px;color:var(--accent-hi);letter-spacing:.14em}
+.steps h3{margin-top:12px;font-size:15.5px;line-height:1.5}
+.steps p{margin-top:9px;font-size:12.5px;color:var(--muted);line-height:1.65}
+@media (max-width:940px){.steps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}.about{grid-template-columns:1fr}}
+.side .blk+.blk{margin-top:28px;padding-top:24px;border-top:1px solid var(--line-soft)}
+.side .cap{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:13px}
+.side .tagrow{display:flex;flex-wrap:wrap;gap:7px}
+
+/* ── 收尾 / 灯箱 / toast ────────────────────────────── */
+.closing{text-align:center;padding-block:clamp(80px,9vw,132px)}
+.closing h2{font-size:clamp(28px,3.8vw,50px);line-height:1.15;letter-spacing:-.03em;max-width:20ch;margin-inline:auto}
+.closing .lead{margin:20px auto 32px;max-width:46ch}
+.foot{border-top:1px solid var(--line-soft);padding-block:32px}
+.foot .in{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.lb{position:fixed;inset:0;z-index:95;display:grid;place-items:center;padding:20px;background:rgba(5,5,6,.84);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);opacity:0;visibility:hidden;
+  transition:opacity .5s var(--ease),visibility .5s var(--ease)}
+.lb.open{opacity:1;visibility:visible}
+.lb .panel{width:100%;max-width:800px;display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);
+  gap:clamp(18px,2.4vw,30px);align-items:center;background:linear-gradient(180deg,var(--surface-hi),var(--surface));
+  border:1px solid var(--line);border-radius:24px;padding:16px;transform:translateY(18px) scale(.97);
+  transition:transform .55s var(--ease)}
+.lb.open .panel{transform:none}
+.lb .panel img{width:100%;border-radius:16px}
+.lb .play{font-family:var(--font-display);font-size:clamp(30px,4vw,48px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.lb .play i{font-style:normal;font-size:.42em;color:var(--muted);margin-left:4px}
+.lb h3{margin-top:14px;font-size:17px;line-height:1.6;font-weight:700}
+.lb .meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.lb .actions{margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.lb .close{position:absolute;top:22px;right:22px;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--fg-2);transition:all .4s var(--ease)}
+.lb .close:hover{border-color:var(--accent);color:var(--fg);transform:rotate(90deg)}
+@media (max-width:680px){.lb .panel{grid-template-columns:1fr;max-height:86vh;overflow:auto}.lb .panel img{max-width:190px;margin-inline:auto}}
+.toast{position:fixed;left:50%;bottom:30px;z-index:99;transform:translate(-50%,18px);opacity:0;
+  background:var(--surface-hi);border:1px solid var(--line);border-radius:999px;padding:11px 20px;
+  font-family:var(--font-mono);font-size:12px;color:var(--fg);pointer-events:none;
+  transition:opacity .4s var(--ease),transform .4s var(--ease)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ── 极光背景（三层缓慢漂移） ───────────────────────── */
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;display:block;border-radius:999px;will-change:transform}
+.aurora i:nth-child(1){width:58vw;height:58vw;left:-10vw;top:-16vw;opacity:.55;
+  background:radial-gradient(circle at 42% 42%, rgba(77,107,254,.30), transparent 66%);
+  animation:drift-a 34s cubic-bezier(.45,.05,.55,.95) infinite alternate}
+.aurora i:nth-child(2){width:46vw;height:46vw;right:-8vw;top:14vh;opacity:.45;
+  background:radial-gradient(circle at 50% 50%, rgba(38,208,235,.20), transparent 66%);
+  animation:drift-b 44s cubic-bezier(.45,.05,.55,.95) infinite alternate}
+.aurora i:nth-child(3){width:66vw;height:42vw;left:16vw;bottom:-18vw;opacity:.42;
+  background:radial-gradient(circle at 50% 50%, rgba(124,155,255,.20), transparent 68%);
+  animation:drift-c 39s cubic-bezier(.45,.05,.55,.95) infinite alternate}
+@keyframes drift-a{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(9vw,7vh,0) scale(1.18)}}
+@keyframes drift-b{from{transform:translate3d(0,0,0) scale(1.1)}to{transform:translate3d(-8vw,9vh,0) scale(.92)}}
+@keyframes drift-c{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-6vw,-8vh,0) scale(1.14)}}
+@media (prefers-reduced-motion:reduce){.aurora i{animation:none}}
+
+/* ── 跟手光标环 ─────────────────────────────────────── */
+.cursor{position:fixed;left:0;top:0;z-index:120;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.34);pointer-events:none;opacity:0;
+  transition:opacity .4s var(--ease),width .38s var(--ease),height .38s var(--ease),
+    margin .38s var(--ease),background .38s var(--ease),border-color .38s var(--ease)}
+.cursor.on{opacity:1}
+.cursor.hot{width:76px;height:76px;margin:-38px 0 0 -38px;background:var(--accent-soft);border-color:var(--accent-hi)}
+.cursor b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-mono);font-size:9.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--fg);opacity:0;transition:opacity .3s var(--ease)}
+.cursor.hot b{opacity:1}
+@media (hover:none){.cursor{display:none}}
+
+/* ── 卡片旋转流光边（conic 扫光） ───────────────────── */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+.shell.glow::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:4;
+  background:conic-gradient(from var(--ang),transparent 0 56%,rgba(124,155,255,.9) 71%,rgba(255,255,255,.55) 77%,transparent 88%);
+  -webkit-mask:linear-gradient(var(--mask) 0 0) content-box,linear-gradient(var(--mask) 0 0);
+  -webkit-mask-composite:xor;
+  mask:linear-gradient(var(--mask) 0 0) content-box,linear-gradient(var(--mask) 0 0);
+  mask-composite:exclude;
+  opacity:0;transition:opacity .55s var(--ease);animation:angspin 3.4s linear infinite}
+.shell.glow:hover::after{opacity:1}
+@keyframes angspin{to{--ang:360deg}}
+@media (prefers-reduced-motion:reduce){.shell.glow::after{animation:none;opacity:0}}
+
+/* ── 点击涟漪 ───────────────────────────────────────── */
+.ripple{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:999px;pointer-events:none;z-index:6;
+  background:radial-gradient(circle,rgba(255,255,255,.5),transparent 68%);transform:scale(0);
+  animation:rip .72s var(--ease) forwards}
+@keyframes rip{60%{opacity:.45}to{transform:scale(26);opacity:0}}
+
+/* ── 回到顶部 ───────────────────────────────────────── */
+.totop{position:fixed;right:22px;bottom:22px;z-index:85;width:46px;height:46px;border-radius:999px;
+  border:1px solid var(--line);background:color-mix(in oklab,var(--bg-2) 84%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:grid;place-items:center;color:var(--fg-2);
+  opacity:0;transform:translateY(14px) scale(.9);pointer-events:none;
+  transition:opacity .5s var(--ease),transform .5s var(--ease),border-color .4s var(--ease)}
+.totop.show{opacity:1;transform:none;pointer-events:auto}
+.totop:hover{border-color:var(--accent);color:var(--fg)}
+
+/* ── 字符级揭示 ─────────────────────────────────────── */
+.h1 .ch{display:inline-block;font-style:normal;white-space:pre;opacity:0;
+  transform:translate3d(0,.42em,0) rotate(3deg) scale(.96);
+  transition:opacity .8s var(--ease),transform .95s var(--ease);
+  transition-delay:calc(var(--i,0) * .026s)}
+.js .h1.in .ch{opacity:1;transform:none}
+.js .h1[data-rv]{opacity:1;transform:none;transition:none}
+@media (prefers-reduced-motion:reduce){.h1 .ch{opacity:1;transform:none;transition:none}}
+
+/* ── 滚动速度倾斜 ───────────────────────────────────── */
+[data-skew]{transform:skewY(var(--skew,0deg))}
+
+/* ── 图片遮罩揭示（无 JS 时不做隐藏） ───────────────── */
+.js .rvimg{clip-path:inset(0 0 100% 0);transition:clip-path 1.05s var(--ease) var(--d,0s)}
+.js .rvimg.in{clip-path:inset(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.js .rvimg{clip-path:none;transition:none}}
+
+/* ── 封面墙（钉住 + 横向滚动） ──────────────────────── */
+.wall{position:relative}
+.wall-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.wall-head{width:100%;max-width:var(--maxw);margin:0 auto 24px;padding-inline:var(--pad-x)}
+.wall-track{display:flex;gap:clamp(12px,1.4vw,20px);padding-inline:var(--pad-x);width:max-content;will-change:transform}
+.wcard{width:clamp(176px,16.5vw,238px);flex:0 0 auto;cursor:pointer}
+.wcard .wi{border-radius:var(--r-md);overflow:hidden;background:var(--bg-2);aspect-ratio:323/430;position:relative}
+.wcard .wi img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.wcard:hover .wi img{transform:scale(1.06)}
+.wcard .wn{position:absolute;left:11px;bottom:10px;z-index:2;font-family:var(--font-mono);font-size:12px;font-weight:700}
+.wcard .wt{margin-top:10px;font-family:var(--font-display);font-size:12.5px;font-weight:700;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wcard .wd{margin-top:5px;font-family:var(--font-mono);font-size:10.5px;color:var(--muted);display:flex;justify-content:space-between}
+.wall-bar{height:2px;background:var(--line-soft);border-radius:2px;position:relative;
+  width:min(calc(var(--maxw) - var(--pad-x)*2),calc(100% - var(--pad-x)*2));margin:30px auto 0}
+.wall-bar i{position:absolute;left:0;top:0;height:100%;width:0;background:var(--accent);border-radius:2px}
+
+/* ── 灯箱共享元素（View Transitions） ───────────────── */
+::view-transition-old(wtwork),::view-transition-new(wtwork){
+  animation-duration:.52s;animation-timing-function:cubic-bezier(.32,.72,0,1)}
+
+/* ── 其他开源项目 ───────────────────────────────────── */
+.repos{grid-template-columns:repeat(3,1fr)}
+.repos>div{display:flex}
+.repos .shell{flex:1;display:flex}
+.repos .core{flex:1;display:flex}
+.repo{display:flex;flex-direction:column;flex:1;padding:clamp(17px,2vw,23px)}
+.repo .rh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.repo .rn{font-family:var(--font-display);font-size:15.5px;font-weight:700;letter-spacing:-.01em;
+  transition:color .4s var(--ease);word-break:break-all}
+.repo:hover .rn{color:var(--accent-hi)}
+.repo .rs{display:inline-flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:11px;color:var(--muted);flex:0 0 auto}
+.repo .rs svg{width:11px;height:11px}
+.repo .rd{margin-top:11px;font-size:12.5px;color:var(--muted);line-height:1.72;flex:1}
+.repo .rf{margin-top:15px;padding-top:13px;border-top:1px solid var(--line-soft);display:flex;
+  align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:10px;
+  color:var(--dim);letter-spacing:.06em}
+.repo .lg{display:inline-flex;align-items:center;gap:6px}
+.repo .lg i{width:6px;height:6px;border-radius:999px;background:var(--fg-2);display:block}
+@media (max-width:940px){.repos{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.repos{grid-template-columns:1fr}}
+
+/* ══ 移动端竖屏适配 ═══════════════════════════════════ */
+html{-webkit-tap-highlight-color:transparent}
+.overlay.open a:nth-child(7){transition-delay:.35s}
+.overlay.open a:nth-child(8){transition-delay:.4s}
+
+@media (max-width:940px){
+  :root{--sec-y:clamp(52px,9vw,80px);--pad-x:20px}
+  .nav{gap:10px}
+  .aurora i:nth-child(2){opacity:.26}
+  .grain{opacity:.02}
+  .hero{padding-top:104px}
+  .h1{font-size:clamp(32px,10.4vw,44px);line-height:1.14;letter-spacing:-.028em}
+  .h2{font-size:clamp(24px,7.2vw,33px)}
+  .lead{font-size:15.5px;line-height:1.78}
+  .board{grid-template-columns:repeat(2,1fr);gap:12px}
+  .board .wide2,.board .wide3{grid-column:span 2}
+  .board .cell{min-height:0;padding:17px}
+  .board .big{font-size:clamp(25px,8vw,33px);margin-top:12px}
+  .board .sub{font-size:12px}
+  .chart{height:74px;gap:2px}
+  .hours{height:44px}
+  .axis span{font-size:7.5px}
+  .bar-tools{flex-direction:column;align-items:stretch;gap:10px}
+  .seg{width:100%}
+  .seg button{flex:1;padding:9px 6px;text-align:center}
+  .searchbox{width:100%;min-width:0}
+  .row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"meta play" "title title";
+    gap:4px 12px;padding:14px 2px}
+  .row .d{grid-area:meta}
+  .row .t{grid-area:title}
+  .row .p{grid-area:play}
+  .foot .in{flex-direction:column;align-items:flex-start;gap:8px}
+  /* 封面墙：钉住滚动降级为原生横滑 + 吸附 */
+  .wall{height:auto !important}
+  .wall-pin{position:static;height:auto;padding-block:var(--sec-y);overflow:visible}
+  .wall-head{margin-bottom:20px}
+  .wall-track{transform:none !important;width:100%;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    padding-block:4px 14px}
+  .wall-track::-webkit-scrollbar{display:none}
+  .wcard{width:62vw;max-width:236px;scroll-snap-align:center}
+  .wall-bar{display:none}
+  /* 竖屏触感反馈（无 hover 时的替代） */
+  .shell.glow::after{display:none}
+}
+@media (max-width:600px){
+  :root{--pad-x:16px;--r-lg:22px}
+  .hero{padding-top:96px}
+  .h1{font-size:clamp(29px,9.6vw,38px)}
+  .board .big{font-size:clamp(23px,7.4vw,30px)}
+  .board .cell{padding:15px}
+  .board .cap{font-size:9px;letter-spacing:.12em}
+  .grow-grid{grid-template-columns:1fr}
+  .grid.colls{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr}
+  .colls .cell{min-height:0}
+  .colls .n{font-size:36px}
+  .lb .panel{padding:14px;gap:14px}
+  .lb .panel img{max-width:52vw;margin-inline:auto}
+  .lb .close{top:14px;right:14px;width:36px;height:36px}
+  .closing h2{font-size:clamp(24px,8vw,32px)}
+  .marquee span{font-size:13.5px;gap:24px}
+  .marquee .track{gap:24px;animation-duration:34s}
+  .totop{right:16px;bottom:16px;width:42px;height:42px}
+  .pcard .av{width:78px;height:78px}
+}
+@media (hover:none){
+  .work:active .thumbwrap img,.wcard:active .wi img{transform:scale(1.03)}
+  .feat:active .thumb img{transform:scale(1.02)}
+  .row:active{background:rgba(255,255,255,.05)}
+  .btn-primary:active{transform:scale(.97)}
+  .shell.lift:active{border-color:var(--line)}
+}
+@supports (padding:env(safe-area-inset-bottom)){
+  .foot{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+  .totop{bottom:calc(22px + env(safe-area-inset-bottom));right:calc(22px + env(safe-area-inset-right))}
+}
+
+/* ── 揭示 ───────────────────────────────────────────── */
+.js [data-rv]{opacity:0;transform:translate3d(0,26px,0);
+  transition:opacity .9s var(--ease) var(--d,0s),transform .9s var(--ease) var(--d,0s)}
+.js [data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js [data-rv]{opacity:1;transform:none;transition:none}
+  .tshell,.tilt{transform:none}.marquee .track{animation:none}
+  .chart .b,.hours .hb{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="mesh" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="spot" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+  <div class="progress" id="progress"></div>
+  <div class="navbar">
+    <nav class="nav" id="nav">
+      <span class="brand"><img src="assets/avatar.webp" alt="" width="300" height="300" />Omega泡泡怪</span>
+      <div class="links">
+        <a href="#board">看板</a>
+        <a href="#colls">合集</a>
+        <a href="#works">代表作</a>
+        <a href="#wall">封面墙</a>
+        <a href="#all">全部作品</a>
+        <a href="#method">做法</a>
+        <a href="#repos">开源</a>
+        <a href="#about">关于</a>
+      </div>
+      <a class="cta" id="magCta" href="https://www.douyin.com/user/MS4wLjABAAAAMqgfrztD7OkhkUauJIzvrUXBHewXGIhh1n4PWkAAE0Jr-bvD_BGKuwafLwWvpoSu" target="_blank" rel="noopener">抖音主页</a>
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false"><i></i><i></i></button>
+    </nav>
+  </div>
+  <div class="overlay" id="overlay">
+    <a href="#board">看板</a>
+<a href="#colls">合集</a>
+<a href="#works">代表作</a>
+<a href="#wall">封面墙</a>
+<a href="#all">全部作品</a>
+<a href="#method">做法</a>
+<a href="#repos">开源</a>
+<a href="#about">关于</a>
+  </div>
+<div class="wrap">
+<main>
+  <section class="sec hero" id="top" data-od-id="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow" data-rv>AI 创作者 · 福建厦门</p>
+        <h1 class="h1" data-rv><i class="ch" style="--i:0">1</i><i class="ch" style="--i:1">9</i> <i class="ch" style="--i:2">岁</i><i class="ch" style="--i:3">大</i><i class="ch" style="--i:4">二</i><i class="ch" style="--i:5">在</i><i class="ch" style="--i:6">读</i><i class="ch" style="--i:7">，</i><br /><i class="ch" style="--i:8">用</i> <i class="ch" style="--i:9">A</i><i class="ch" style="--i:10">I</i> <i class="ch" style="--i:11">工</i><i class="ch" style="--i:12">具</i><i class="ch" style="--i:13">把</i><i class="ch" style="--i:14">想</i><i class="ch" style="--i:15">法</i><br /><i class="ch" style="--i:16">做</i><i class="ch" style="--i:17">成</i><i class="ch" style="--i:18">能</i><i class="ch" style="--i:19">跑</i><i class="ch" style="--i:20">的</i><i class="ch" style="--i:21">东</i><i class="ch" style="--i:22">西</i><i class="ch" style="--i:23">。</i></h1>
+        <p class="lead" data-rv style="--d:.12s">集美大学人工智能专业大二。21 天更新 25 条 DeepSeek Harness 与
+          vibe coding 内容，累计 146.3 万播放，单条最高 43.5 万——从装环境、配 token 到跑通工作流，全程公开记录。</p>
+        <div class="hero-actions" data-rv style="--d:.18s">
+          <a class="btn btn-primary" id="magBtn" href="#works">看代表作<span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></span></a>
+          <a class="btn-plain" href="#all">全部 25 条作品 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+        </div>
+        <div class="figures" data-rv style="--d:.24s">
+          <div class="fig"><b>146.3万</b><span>累计播放</span></div>
+          <div class="fig"><b>1.19 条/天</b><span>更新节奏</span></div>
+          <div class="fig"><b>64%</b><span>Top3 播放占比</span></div>
+          <div class="fig"><b>21 天</b><span>起号至今</span></div>
+        </div>
+      </div>
+      <div data-rv style="--d:.14s"><div class="shell tilt glow" data-tilt="10"><div class="core"><div class="pcard">
+        <img class="av" src="assets/avatar.webp" alt="Omega泡泡怪「玩AI版」抖音头像" width="300" height="300" />
+        <div class="nm">Omega泡泡怪「玩AI版」</div>
+        <div class="idrow"><span class="id">omegapaopao</span>
+          <button class="copy" id="copyId" data-copy="omegapaopao">复制</button></div>
+        <div class="tags">
+          <span class="tag">vibe coding</span><span class="tag">Agent 工具开发</span>
+          <span class="tag">开源 Skill</span><span class="tag">福建 · 厦门</span>
+        </div>
+        <div class="stats">
+          <div><b>1,948</b><span>粉丝</span></div>
+          <div><b>7.8万</b><span>获赞</span></div>
+          <div><b>25</b><span>作品</span></div>
+        </div>
+      </div><span class="sheen"></span></div></div></div>
+    </div>
+  </section>
+  <div class="marquee" aria-hidden="true"><div class="track"><span>DeepSeek Harness</span><span>Skill 实测</span><span>MCP</span><span>Agent 搭建</span><span>省 Token</span><span>生图工作流</span><span>视频生成</span><span>vibe coding</span><span>开源项目</span><span>插件评测</span><span>本地部署</span><span>提示词工程</span><span>DeepSeek Harness</span><span>Skill 实测</span><span>MCP</span><span>Agent 搭建</span><span>省 Token</span><span>生图工作流</span><span>视频生成</span><span>vibe coding</span><span>开源项目</span><span>插件评测</span><span>本地部署</span><span>提示词工程</span></div></div>
+  <section class="sec" id="board" data-od-id="board">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>数据看板</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">21 天，从 0 到 146 万播放。</h2>
+        </div>
+        <p class="mono muted" data-rv style="--d:.12s;font-size:11.5px;letter-spacing:.1em;">抓取于 2026-10-06</p>
+      </div>
+      <div class="grid board">
+        <div class="wide2" data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">累计播放</div>
+          <div class="big" data-count="146.3">146.3<i>万</i></div>
+          <div class="sub">25 条作品加总，抖音卡片口径</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="" data-rv style="--d:0.04s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">抖音粉丝</div>
+          <div class="big" data-count="1,948">1,948<i></i></div>
+          <div class="sub">21 天从 0 起号</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="" data-rv style="--d:0.08s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">累计获赞</div>
+          <div class="big" data-count="7.8">7.8<i>万</i></div>
+          <div class="sub">78,160 次点赞</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="" data-rv style="--d:0.12s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">中位播放</div>
+          <div class="big" data-count="1.2">1.2<i>万</i></div>
+          <div class="sub">常态水位，非均值</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="" data-rv style="--d:0.16s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">破 5 万</div>
+          <div class="big" data-count="7">7<i>条</i></div>
+          <div class="sub">其中 3 条破 10 万</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="" data-rv style="--d:0.20s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">收藏/点赞</div>
+          <div class="big" data-count="≈1">≈1<i></i></div>
+          <div class="sub">内容被当资料存</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="wide2" data-rv><div class="shell glow" ><div class="core"><div class="cell">
+          <div class="cap">单条播放分布 · 按发布顺序</div>
+          <div class="chart" id="chart"><div class="b" style="--v:0.606" data-tip="#01 · 16.0万 · 零基础VibeCoding扫盲| 一次性讲懂vibecoding、t"></div><div class="b" style="--v:0.887" data-tip="#02 · 34.2万 · vibecoding大赏| 同样用DeepSeek V4.1 Fla"></div><div class="b" style="--v:1.000" data-tip="#03 · 43.5万 · vibecoding大赏|如果让我回到第一次用 DSH 的那天……我"></div><div class="b" style="--v:0.404" data-tip="#04 · 7.1万 · vibecoding大赏| 装完 DeepSeek Harness "></div><div class="b" style="--v:0.090" data-tip="#05 · 3,494 · vibecoding大赏| 实用视频工具 5款开源视频skill，直"></div><div class="b" style="--v:0.240" data-tip="#06 · 2.5万 · vibecoding大赏| 还在全网到处找Skills？Cocolo"></div><div class="b" style="--v:0.472" data-tip="#07 · 9.7万 · DeepseekHarness配置教程！ 刚装好 DSH ，别上来就"></div><div class="b" style="--v:0.095" data-tip="#08 · 3,932 · 3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚"></div><div class="b" style="--v:0.065" data-tip="#09 · 1,855 · 四款产品，DSH到底特别在哪？ claudecode | codex"></div><div class="b" style="--v:0.123" data-tip="#10 · 6,597 · 报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把"></div><div class="b" style="--v:0.159" data-tip="#11 · 1.1万 · <vibecoding扫盲> 90%做AI项目的人，一开始就把 Sk"></div><div class="b" style="--v:0.240" data-tip="#12 · 2.5万 · DeepseekHarness体检| 你的 DSH 可能还没提问，就"></div><div class="b" style="--v:0.390" data-tip="#13 · 6.6万 · DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件"></div><div class="b" style="--v:0.418" data-tip="#14 · 7.6万 · vibecoding大赏| 为什么你的AI自动化又慢又烧token还"></div><div class="b" style="--v:0.145" data-tip="#15 · 9,109 · 充值一些票子，喂养一些肥鱼，产出一些干货"></div><div class="b" style="--v:0.192" data-tip="#16 · 1.6万 · 最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Je"></div><div class="b" style="--v:0.263" data-tip="#17 · 3.0万 · vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH "></div><div class="b" style="--v:0.166" data-tip="#18 · 1.2万 · 零基础VibeCoding入门！Windows系统8步从零搭建Dee"></div><div class="b" style="--v:0.129" data-tip="#19 · 7,277 · Archify｜DeepSeek Harness 必装Skill 输"></div><div class="b" style="--v:0.166" data-tip="#20 · 1.2万 · Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax"></div><div class="b" style="--v:0.159" data-tip="#21 · 1.1万 · 吃白饭的用户？！压力一只大肥鱼？！"></div><div class="b" style="--v:0.192" data-tip="#22 · 1.6万 · |vibecoding大赏| 这个月 GitHub 上最火的 10 "></div><div class="b" style="--v:0.152" data-tip="#23 · 1.0万 · |vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频"></div><div class="b" style="--v:0.159" data-tip="#24 · 1.1万 · |vibecoding大赏|当我的dsh试着用blender 凝神观"></div><div class="b" style="--v:0.109" data-tip="#25 · 5,165 · |vibecoding大赏| 52 个设计 skill，一句话，就能"></div></div>
+          <div class="sub" style="margin-top:12px;">纵轴为开方比例（否则长尾不可见）· 悬停查看单条</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div class="wide2" data-rv style="--d:.06s"><div class="shell glow" ><div class="core"><div class="cell">
+          <div class="cap">发布时段分布 · 北京时间</div>
+          <div class="hours"><div class="hb on" style="--v:1.000" data-tip="00:00 · 4 条"></div><div class="hb" style="--v:0.000" data-tip="01:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="02:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="03:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="04:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="05:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="06:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="07:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="08:00 · 0 条"></div><div class="hb" style="--v:0.250" data-tip="09:00 · 1 条"></div><div class="hb" style="--v:0.000" data-tip="10:00 · 0 条"></div><div class="hb" style="--v:0.500" data-tip="11:00 · 2 条"></div><div class="hb" style="--v:0.000" data-tip="12:00 · 0 条"></div><div class="hb" style="--v:0.000" data-tip="13:00 · 0 条"></div><div class="hb on" style="--v:1.000" data-tip="14:00 · 4 条"></div><div class="hb" style="--v:0.250" data-tip="15:00 · 1 条"></div><div class="hb" style="--v:0.000" data-tip="16:00 · 0 条"></div><div class="hb on" style="--v:1.000" data-tip="17:00 · 4 条"></div><div class="hb" style="--v:0.000" data-tip="18:00 · 0 条"></div><div class="hb" style="--v:0.500" data-tip="19:00 · 2 条"></div><div class="hb" style="--v:0.000" data-tip="20:00 · 0 条"></div><div class="hb" style="--v:0.750" data-tip="21:00 · 3 条"></div><div class="hb" style="--v:0.250" data-tip="22:00 · 1 条"></div><div class="hb" style="--v:0.750" data-tip="23:00 · 3 条"></div></div>
+          <div class="axis"><span>0</span><span></span><span></span><span>3</span><span></span><span></span><span>6</span><span></span><span></span><span>9</span><span></span><span></span><span>12</span><span></span><span></span><span>15</span><span></span><span></span><span>18</span><span></span><span></span><span>21</span><span></span><span></span></div>
+          <div class="sub" style="margin-top:12px;">白天 12 条、深夜 11 条——没有固定档期，14:00 与 00:00 各 4 条并列最高</div>
+        </div><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="grow" data-od-id="grow">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>11 天变化</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">09-25 → 10-06，账号又涨了一倍多。</h2>
+        </div>
+        <p class="lead" data-rv style="--d:.12s;max-width:36ch;font-size:14.5px;">
+          对比两份不同时间的快照：左边是当时抓取到的数字，右边是本次。</p>
+      </div>
+      <div class="grid board grow-grid">
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">粉丝</div>
+          <div class="delta" style="margin-top:auto">
+            <span class="from">603</span><span class="arrow">→</span><span class="to">1,948</span>
+          </div>
+          <div class="sub"><span class="up">+1,345</span></div>
+        </div><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.06s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">获赞</div>
+          <div class="delta" style="margin-top:auto">
+            <span class="from">4.2万</span><span class="arrow">→</span><span class="to">7.8万</span>
+          </div>
+          <div class="sub"><span class="up">+3.6万</span></div>
+        </div><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.12s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="cap">作品</div>
+          <div class="delta" style="margin-top:auto">
+            <span class="from">17</span><span class="arrow">→</span><span class="to">25</span>
+          </div>
+          <div class="sub"><span class="up">+8</span></div>
+        </div><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="colls" data-od-id="colls">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>内容矩阵</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">三个合集，把 AI 工具链讲成一条线。</h2>
+        </div>
+        <p class="lead" data-rv style="--d:.12s;max-width:32ch;font-size:14.5px;">长内容按系列沉淀，观众可以顺着看下去。</p>
+      </div>
+      <div class="grid colls">
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" data-tilt="4"><div class="core"><div class="cell">
+          <div class="nm">skil/dsh插件分享＆资讯</div>
+          <div class="ep">更新至 13 集</div>
+          <div class="n">101.9<i>万</i></div>
+          <div class="bar" style="--w:1.00"></div>
+          <div class="sub">播放量 · 合集内全部作品</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.06s"><div class="shell glow lift" data-tilt="4"><div class="core"><div class="cell">
+          <div class="nm">0基础入门Vibecoding</div>
+          <div class="ep">更新至 9 集</div>
+          <div class="n">38.4<i>万</i></div>
+          <div class="bar" style="--w:0.38"></div>
+          <div class="sub">播放量 · 合集内全部作品</div>
+        </div><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.12s"><div class="shell glow lift" data-tilt="4"><div class="core"><div class="cell">
+          <div class="nm">AIGC实战</div>
+          <div class="ep">更新至 3 集</div>
+          <div class="n">3.2<i>万</i></div>
+          <div class="bar" style="--w:0.03"></div>
+          <div class="sub">播放量 · 合集内全部作品</div>
+        </div><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="works" data-od-id="works">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>代表作 · 按播放量</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">六条片子，撑起 80% 的播放。</h2>
+        </div>
+        <a class="btn-plain" href="#all" data-rv style="--d:.12s">看全部 25 条 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div data-rv><div class="shell glow" data-tilt="5"><div class="core"><article class="feat" data-open="3">
+        <div class="thumb"><img class="rvimg" src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill" width="323" height="430" /></div>
+        <div class="body">
+          <div class="play">43.5<i>万</i></div>
+          <h3>vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill</h3>
+          <div class="meta"><span>播放量 · 全账号最高</span><span>2026-09-20 14:24</span>
+            <span>合集《skil/dsh插件分享＆资讯》</span></div>
+        </div>
+      </article><span class="sheen"></span></div></div></div>
+      <div class="grid works" data-skew style="margin-top:clamp(13px,1.6vw,20px)">
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="2">
+          <div class="thumbwrap">
+            <img class="rvimg" src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个" width="323" height="430" loading="lazy" />
+            <span class="rank">TOP 2</span>
+            <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>34.2万</div>
+          </div>
+          <div class="info">
+            <div class="t">vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗</div>
+            <div class="d"><span>2026-09-21</span><span>23:24</span></div>
+          </div>
+        </article><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="1">
+          <div class="thumbwrap">
+            <img class="rvimg" src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、promp" width="323" height="430" loading="lazy" />
+            <span class="rank">TOP 3</span>
+            <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>16.0万</div>
+          </div>
+          <div class="info">
+            <div class="t">零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕</div>
+            <div class="d"><span>2026-09-22</span><span>17:13</span></div>
+          </div>
+        </article><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.10s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="7">
+          <div class="thumbwrap">
+            <img class="rvimg" src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面" width="323" height="430" loading="lazy" />
+            <span class="rank">TOP 4</span>
+            <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>9.7万</div>
+          </div>
+          <div class="info">
+            <div class="t">DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路</div>
+            <div class="d"><span>2026-10-04</span><span>19:31</span></div>
+          </div>
+        </article><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="14">
+          <div class="thumbwrap">
+            <img class="rvimg" src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MC" width="323" height="430" loading="lazy" />
+            <span class="rank">TOP 5</span>
+            <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>7.6万</div>
+          </div>
+          <div class="info">
+            <div class="t">vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路</div>
+            <div class="d"><span>2026-09-24</span><span>14:13</span></div>
+          </div>
+        </article><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="4">
+          <div class="thumbwrap">
+            <img class="rvimg" src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？" width="323" height="430" loading="lazy" />
+            <span class="rank">TOP 6</span>
+            <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>7.1万</div>
+          </div>
+          <div class="info">
+            <div class="t">vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！</div>
+            <div class="d"><span>2026-10-06</span><span>14:41</span></div>
+          </div>
+        </article><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="wall" id="wall" data-od-id="wall">
+    <div class="wall-pin">
+      <div class="wall-head">
+        <p class="eyebrow" data-rv>封面墙 · 25 张</p>
+        <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">继续往下滚，这一条会横向走完。</h2>
+      </div>
+      <div class="wall-track" id="wallTrack">
+        <article class="wcard" data-open="4">
+          <div class="wi"><img class="rvimg" src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么"
+            width="323" height="430" loading="lazy" /><span class="wn">7.1万</span></div>
+          <div class="wt">vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！</div>
+          <div class="wd"><span>2026-10-06</span><span>14:41</span></div>
+        </article>
+        <article class="wcard" data-open="5">
+          <div class="wi"><img class="rvimg" src="assets/covers/05.jpg" alt="vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满"
+            width="323" height="430" loading="lazy" /><span class="wn">3,494</span></div>
+          <div class="wt">vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames</div>
+          <div class="wd"><span>2026-10-05</span><span>21:03</span></div>
+        </article>
+        <article class="wcard" data-open="6">
+          <div class="wi"><img class="rvimg" src="assets/covers/06.jpg" alt="vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万ski"
+            width="323" height="430" loading="lazy" /><span class="wn">2.5万</span></div>
+          <div class="wt">vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置</div>
+          <div class="wd"><span>2026-10-05</span><span>00:11</span></div>
+        </article>
+        <article class="wcard" data-open="7">
+          <div class="wi"><img class="rvimg" src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一"
+            width="323" height="430" loading="lazy" /><span class="wn">9.7万</span></div>
+          <div class="wt">DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路</div>
+          <div class="wd"><span>2026-10-04</span><span>19:31</span></div>
+        </article>
+        <article class="wcard" data-open="8">
+          <div class="wi"><img class="rvimg" src="assets/covers/08.jpg" alt="3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，"
+            width="323" height="430" loading="lazy" /><span class="wn">3,932</span></div>
+          <div class="wt">3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份</div>
+          <div class="wd"><span>2026-10-04</span><span>14:08</span></div>
+        </article>
+        <article class="wcard" data-open="9">
+          <div class="wi"><img class="rvimg" src="assets/covers/09.jpg" alt="四款产品，DSH到底特别在哪？ claudecode | codex | workbud"
+            width="323" height="430" loading="lazy" /><span class="wn">1,855</span></div>
+          <div class="wt">四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness</div>
+          <div class="wd"><span>2026-09-28</span><span>19:02</span></div>
+        </article>
+        <article class="wcard" data-open="10">
+          <div class="wi"><img class="rvimg" src="assets/covers/10.jpg" alt="报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Age"
+            width="323" height="430" loading="lazy" /><span class="wn">6,597</span></div>
+          <div class="wt">报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测</div>
+          <div class="wd"><span>2026-09-26</span><span>11:18</span></div>
+        </article>
+        <article class="wcard" data-open="11">
+          <div class="wi"><img class="rvimg" src="assets/covers/11.jpg" alt="&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP "
+            width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
+          <div class="wt">&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技</div>
+          <div class="wd"><span>2026-09-25</span><span>17:22</span></div>
+        </article>
+        <article class="wcard" data-open="12">
+          <div class="wi"><img class="rvimg" src="assets/covers/12.jpg" alt="DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 "
+            width="323" height="430" loading="lazy" /><span class="wn">2.5万</span></div>
+          <div class="wt">DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding</div>
+          <div class="wd"><span>2026-09-25</span><span>09:48</span></div>
+        </article>
+        <article class="wcard" data-open="13">
+          <div class="wi"><img class="rvimg" src="assets/covers/13.jpg" alt="DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一"
+            width="323" height="430" loading="lazy" /><span class="wn">6.6万</span></div>
+          <div class="wt">DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯</div>
+          <div class="wd"><span>2026-09-24</span><span>22:00</span></div>
+        </article>
+        <article class="wcard" data-open="14">
+          <div class="wi"><img class="rvimg" src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人"
+            width="323" height="430" loading="lazy" /><span class="wn">7.6万</span></div>
+          <div class="wt">vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路</div>
+          <div class="wd"><span>2026-09-24</span><span>14:13</span></div>
+        </article>
+        <article class="wcard" data-open="15">
+          <div class="wi"><img class="rvimg" src="assets/covers/15.jpg" alt="充值一些票子，喂养一些肥鱼，产出一些干货"
+            width="323" height="430" loading="lazy" /><span class="wn">9,109</span></div>
+          <div class="wt">充值一些票子，喂养一些肥鱼，产出一些干货</div>
+          <div class="wd"><span>2026-09-24</span><span>11:16</span></div>
+        </article>
+        <article class="wcard" data-open="16">
+          <div class="wi"><img class="rvimg" src="assets/covers/16.jpg" alt="最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会"
+            width="323" height="430" loading="lazy" /><span class="wn">1.6万</span></div>
+          <div class="wt">最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流</div>
+          <div class="wd"><span>2026-09-23</span><span>23:22</span></div>
+        </article>
+        <article class="wcard" data-open="17">
+          <div class="wi"><img class="rvimg" src="assets/covers/17.jpg" alt="vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让D"
+            width="323" height="430" loading="lazy" /><span class="wn">3.0万</span></div>
+          <div class="wt">vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！</div>
+          <div class="wd"><span>2026-09-23</span><span>15:39</span></div>
+        </article>
+        <article class="wcard" data-open="18">
+          <div class="wi"><img class="rvimg" src="assets/covers/18.jpg" alt="零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harn"
+            width="323" height="430" loading="lazy" /><span class="wn">1.2万</span></div>
+          <div class="wt">零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台</div>
+          <div class="wd"><span>2026-09-22</span><span>21:56</span></div>
+        </article>
+        <article class="wcard" data-open="1">
+          <div class="wi"><img class="rvimg" src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent"
+            width="323" height="430" loading="lazy" /><span class="wn">16.0万</span></div>
+          <div class="wt">零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕</div>
+          <div class="wd"><span>2026-09-22</span><span>17:13</span></div>
+        </article>
+        <article class="wcard" data-open="2">
+          <div class="wi"><img class="rvimg" src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10"
+            width="323" height="430" loading="lazy" /><span class="wn">34.2万</span></div>
+          <div class="wt">vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗</div>
+          <div class="wd"><span>2026-09-21</span><span>23:24</span></div>
+        </article>
+        <article class="wcard" data-open="19">
+          <div class="wi"><img class="rvimg" src="assets/covers/19.jpg" alt="Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击"
+            width="323" height="430" loading="lazy" /><span class="wn">7,277</span></div>
+          <div class="wt">Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能</div>
+          <div class="wd"><span>2026-09-21</span><span>17:19</span></div>
+        </article>
+        <article class="wcard" data-open="20">
+          <div class="wi"><img class="rvimg" src="assets/covers/20.jpg" alt="Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显"
+            width="323" height="430" loading="lazy" /><span class="wn">1.2万</span></div>
+          <div class="wt">Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频</div>
+          <div class="wd"><span>2026-09-21</span><span>00:39</span></div>
+        </article>
+        <article class="wcard" data-open="3">
+          <div class="wi"><img class="rvimg" src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要"
+            width="323" height="430" loading="lazy" /><span class="wn">43.5万</span></div>
+          <div class="wt">vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill</div>
+          <div class="wd"><span>2026-09-20</span><span>14:24</span></div>
+        </article>
+        <article class="wcard" data-open="21">
+          <div class="wi"><img class="rvimg" src="assets/covers/21.jpg" alt="吃白饭的用户？！压力一只大肥鱼？！"
+            width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
+          <div class="wt">吃白饭的用户？！压力一只大肥鱼？！</div>
+          <div class="wd"><span>2026-09-19</span><span>23:59</span></div>
+        </article>
+        <article class="wcard" data-open="22">
+          <div class="wi"><img class="rvimg" src="assets/covers/22.jpg" alt="|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一"
+            width="323" height="430" loading="lazy" /><span class="wn">1.6万</span></div>
+          <div class="wt">|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测</div>
+          <div class="wd"><span>2026-09-19</span><span>00:46</span></div>
+        </article>
+        <article class="wcard" data-open="23">
+          <div class="wi"><img class="rvimg" src="assets/covers/23.jpg" alt="|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything"
+            width="323" height="430" loading="lazy" /><span class="wn">1.0万</span></div>
+          <div class="wt">|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频</div>
+          <div class="wd"><span>2026-09-18</span><span>21:28</span></div>
+        </article>
+        <article class="wcard" data-open="24">
+          <div class="wi"><img class="rvimg" src="assets/covers/24.jpg" alt="|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一"
+            width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
+          <div class="wt">|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命</div>
+          <div class="wd"><span>2026-09-18</span><span>00:16</span></div>
+        </article>
+        <article class="wcard" data-open="25">
+          <div class="wi"><img class="rvimg" src="assets/covers/25.jpg" alt="|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让"
+            width="323" height="430" loading="lazy" /><span class="wn">5,165</span></div>
+          <div class="wt">|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄</div>
+          <div class="wd"><span>2026-09-16</span><span>17:02</span></div>
+        </article>
+      </div>
+      <div class="wall-bar"><i id="wallBar"></i></div>
+    </div>
+  </section>
+  <section class="sec" id="all" data-od-id="all">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>全部作品</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">25 条，可以按播放档位筛。</h2>
+        </div>
+        <p class="mono muted" data-rv style="--d:.12s;font-size:11.5px;letter-spacing:.1em;">09-16 → 10-06 · 中位 1.2 万</p>
+      </div>
+      <div class="bar-tools" data-rv>
+        <div class="seg" id="tiers"><button data-tier="all" class=on>全部 <span style="color:var(--dim)">25</span></button><button data-tier="t1">10万+ <span style="color:var(--dim)">3</span></button><button data-tier="t2">5–10万 <span style="color:var(--dim)">4</span></button><button data-tier="t3">1–5万 <span style="color:var(--dim)">11</span></button><button data-tier="t4">1万以下 <span style="color:var(--dim)">7</span></button></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <label class="searchbox"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6L14 14"/></svg><input id="q" type="search" placeholder="搜索标题关键词…" /></label>
+          <div class="seg" id="sorts">
+            <button data-sort="date" class="on">最新</button>
+            <button data-sort="play">最热</button>
+          </div>
+        </div>
+      </div>
+      <div class="list" id="list" data-rv data-skew>
+        <div class="row" data-open="4" data-tier="t2"
+             data-play="71000" data-idx="4" data-title="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！">
+          <span class="d">2026-10-06<br />14:41</span>
+          <span class="t">vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！</span>
+          <span class="tg"><i>deepseekharness</i><i>vibecoding</i></span>
+          <span class="p">7.1万</span>
+        </div>
+        <div class="row" data-open="5" data-tier="t4"
+             data-play="3494" data-idx="5" data-title="vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames">
+          <span class="d">2026-10-05<br />21:03</span>
+          <span class="t">vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">3,494</span>
+        </div>
+        <div class="row" data-open="6" data-tier="t3"
+             data-play="25000" data-idx="6" data-title="vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置">
+          <span class="d">2026-10-05<br />00:11</span>
+          <span class="t">vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">2.5万</span>
+        </div>
+        <div class="row" data-open="7" data-tier="t2"
+             data-play="97000" data-idx="7" data-title="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路">
+          <span class="d">2026-10-04<br />19:31</span>
+          <span class="t">DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">9.7万</span>
+        </div>
+        <div class="row" data-open="8" data-tier="t4"
+             data-play="3932" data-idx="8" data-title="3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份">
+          <span class="d">2026-10-04<br />14:08</span>
+          <span class="t">3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份</span>
+          <span class="tg"><i>vibecoding</i><i>agent</i></span>
+          <span class="p">3,932</span>
+        </div>
+        <div class="row" data-open="9" data-tier="t4"
+             data-play="1855" data-idx="9" data-title="四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness">
+          <span class="d">2026-09-28<br />19:02</span>
+          <span class="t">四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness</span>
+          <span class="tg"><i>vibecoding</i><i>deepseekharness</i></span>
+          <span class="p">1,855</span>
+        </div>
+        <div class="row" data-open="10" data-tier="t4"
+             data-play="6597" data-idx="10" data-title="报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测">
+          <span class="d">2026-09-26<br />11:18</span>
+          <span class="t">报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测</span>
+          <span class="tg"><i>vibecoding大赏</i><i>vibecoding</i></span>
+          <span class="p">6,597</span>
+        </div>
+        <div class="row" data-open="11" data-tier="t3"
+             data-play="11000" data-idx="11" data-title="&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技">
+          <span class="d">2026-09-25<br />17:22</span>
+          <span class="t">&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技</span>
+          <span class="tg"><i>抖音前沿科技首发计划</i><i>vibecoding</i></span>
+          <span class="p">1.1万</span>
+        </div>
+        <div class="row" data-open="12" data-tier="t3"
+             data-play="25000" data-idx="12" data-title="DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding">
+          <span class="d">2026-09-25<br />09:48</span>
+          <span class="t">DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding</span>
+          <span class="tg"><i>deepseek</i><i>vibecoding</i></span>
+          <span class="p">2.5万</span>
+        </div>
+        <div class="row" data-open="13" data-tier="t2"
+             data-play="66000" data-idx="13" data-title="DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯">
+          <span class="d">2026-09-24<br />22:00</span>
+          <span class="t">DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯</span>
+          <span class="tg"><i>deepseek</i><i>vibecoding</i></span>
+          <span class="p">6.6万</span>
+        </div>
+        <div class="row" data-open="14" data-tier="t2"
+             data-play="76000" data-idx="14" data-title="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路">
+          <span class="d">2026-09-24<br />14:13</span>
+          <span class="t">vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">7.6万</span>
+        </div>
+        <div class="row" data-open="15" data-tier="t4"
+             data-play="9109" data-idx="15" data-title="充值一些票子，喂养一些肥鱼，产出一些干货">
+          <span class="d">2026-09-24<br />11:16</span>
+          <span class="t">充值一些票子，喂养一些肥鱼，产出一些干货</span>
+          <span class="tg"><i>vibecoding</i><i>deepseek</i></span>
+          <span class="p">9,109</span>
+        </div>
+        <div class="row" data-open="16" data-tier="t3"
+             data-play="16000" data-idx="16" data-title="最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流">
+          <span class="d">2026-09-23<br />23:22</span>
+          <span class="t">最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">1.6万</span>
+        </div>
+        <div class="row" data-open="17" data-tier="t3"
+             data-play="30000" data-idx="17" data-title="vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！">
+          <span class="d">2026-09-23<br />15:39</span>
+          <span class="t">vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！</span>
+          <span class="tg"><i>vibecoding</i><i>deepseek</i></span>
+          <span class="p">3.0万</span>
+        </div>
+        <div class="row" data-open="18" data-tier="t3"
+             data-play="12000" data-idx="18" data-title="零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台">
+          <span class="d">2026-09-22<br />21:56</span>
+          <span class="t">零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">1.2万</span>
+        </div>
+        <div class="row" data-open="1" data-tier="t1"
+             data-play="160000" data-idx="1" data-title="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕">
+          <span class="d">2026-09-22<br />17:13</span>
+          <span class="t">零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕</span>
+          <span class="tg"><i>vibecoding</i><i>deepseek</i></span>
+          <span class="p">16.0万</span>
+        </div>
+        <div class="row" data-open="2" data-tier="t1"
+             data-play="342000" data-idx="2" data-title="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗">
+          <span class="d">2026-09-21<br />23:24</span>
+          <span class="t">vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">34.2万</span>
+        </div>
+        <div class="row" data-open="19" data-tier="t4"
+             data-play="7277" data-idx="19" data-title="Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能">
+          <span class="d">2026-09-21<br />17:19</span>
+          <span class="t">Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能</span>
+          <span class="tg"><i>deepseek</i><i>vibecoding</i></span>
+          <span class="p">7,277</span>
+        </div>
+        <div class="row" data-open="20" data-tier="t3"
+             data-play="12000" data-idx="20" data-title="Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频">
+          <span class="d">2026-09-21<br />00:39</span>
+          <span class="t">Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频</span>
+          <span class="tg"><i>ai</i><i>vibecoding</i></span>
+          <span class="p">1.2万</span>
+        </div>
+        <div class="row" data-open="3" data-tier="t1"
+             data-play="435000" data-idx="3" data-title="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill">
+          <span class="d">2026-09-20<br />14:24</span>
+          <span class="t">vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill</span>
+          <span class="tg"><i>github项目</i><i>vibecoding</i></span>
+          <span class="p">43.5万</span>
+        </div>
+        <div class="row" data-open="21" data-tier="t3"
+             data-play="11000" data-idx="21" data-title="吃白饭的用户？！压力一只大肥鱼？！">
+          <span class="d">2026-09-19<br />23:59</span>
+          <span class="t">吃白饭的用户？！压力一只大肥鱼？！</span>
+          <span class="tg"><i>deepseek</i><i>vibecoding</i></span>
+          <span class="p">1.1万</span>
+        </div>
+        <div class="row" data-open="22" data-tier="t3"
+             data-play="16000" data-idx="22" data-title="|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测">
+          <span class="d">2026-09-19<br />00:46</span>
+          <span class="t">|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测</span>
+          <span class="tg"><i>vibecoding</i><i>vibecoding大赏</i></span>
+          <span class="p">1.6万</span>
+        </div>
+        <div class="row" data-open="23" data-tier="t3"
+             data-play="10000" data-idx="23" data-title="|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频">
+          <span class="d">2026-09-18<br />21:28</span>
+          <span class="t">|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频</span>
+          <span class="tg"><i>vibecoding大赏</i><i>deepseek</i></span>
+          <span class="p">1.0万</span>
+        </div>
+        <div class="row" data-open="24" data-tier="t3"
+             data-play="11000" data-idx="24" data-title="|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命">
+          <span class="d">2026-09-18<br />00:16</span>
+          <span class="t">|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命</span>
+          <span class="tg"><i>blender模型</i><i>vibecoding大赏</i></span>
+          <span class="p">1.1万</span>
+        </div>
+        <div class="row" data-open="25" data-tier="t4"
+             data-play="5165" data-idx="25" data-title="|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄">
+          <span class="d">2026-09-16<br />17:02</span>
+          <span class="t">|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄</span>
+          <span class="tg"><i>vibecoding</i><i>代码工具</i></span>
+          <span class="p">5,165</span>
+        </div>
+      </div>
+      <div class="empty" id="empty" style="display:none">没有匹配的作品，换个关键词试试</div>
+    </div>
+  </section>
+  <section class="sec" id="method" data-od-id="method">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>选题与做法</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">清单谁都能发，<br />只有装过的人知道坑在哪。</h2>
+        </div>
+      </div>
+      <div class="steps" data-skew>
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="no">01</div>
+          <h3>选题只挑自己在用的</h3>
+          <p>当天真实打开过的工具才写进选题，先有使用场景，再决定讲不讲。</p>
+        </div><span class="sheen"></span></div></div></div>        <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="no">02</div>
+          <h3>一条只讲一个动作</h3>
+          <p>装环境、配 key、跑工作流分开讲，看完一条就能立刻照着做一步。</p>
+        </div><span class="sheen"></span></div></div></div>        <div data-rv style="--d:0.10s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="no">03</div>
+          <h3>结论放在最前面</h3>
+          <p>标题和开头直接给结果，参数和步骤放后面，不铺垫背景。</p>
+        </div><span class="sheen"></span></div></div></div>        <div data-rv style="--d:0.15s"><div class="shell glow lift" ><div class="core"><div class="cell">
+          <div class="no">04</div>
+          <h3>评论反复问什么就做什么</h3>
+          <p>同一个问题出现三次以上，就是下一条视频的选题。</p>
+        </div><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="about" data-od-id="about">
+    <div class="container about">
+      <div data-rv>
+        <p class="eyebrow">关于我</p>
+        <h2 class="h2" style="margin-top:16px;">把「听说很厉害」<br />讲到「你已经装好了」。</h2>
+        <p class="lead" style="margin-top:20px;">参数、报错、省下的钱都照着录；能跑通才发，跑不通就如实说卡在哪。</p>
+        <ul class="bio">
+            <li><span class="i">01</span><span>集美大学｜人工智能大二在读</span></li>
+            <li><span class="i">02</span><span>vibe coding｜Agent 工具开发｜开源 skill 分享</span></li>
+            <li><span class="i">03</span><span>DeepSeek Harness「蓝色大肥鱼」饲养员</span></li>
+            <li><span class="i">04</span><span>关注我，教你从 0 开始入门 vibecoding</span></li>
+            <li><span class="i">05</span><span>评论看到都会回复，没回就是在养大肥鱼</span></li>
+        </ul>
+      </div>
+      <div class="side" data-rv style="--d:.08s">
+        <div class="blk">
+          <div class="cap">内容方向</div>
+          <div class="tagrow"><span class="tag">DeepSeek Harness 入门与配置</span><span class="tag">Skill 与插件实测</span><span class="tag">省 token 与成本控制</span><span class="tag">MCP / Agent 概念扫盲</span><span class="tag">生图与视频生成</span><span class="tag">开源项目调研</span><span class="tag">本地工作流搭建</span></div>
+        </div>
+        <div class="blk">
+          <div class="cap">数据来源</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.75;">
+            抖音主页公开数据，2026-10-06 抓取；09-25 对比值来自同期账号快照。
+            播放量为作品卡片展示口径，随时间变化；封面与头像取自账号本人发布内容。</p>
+        </div>
+        <div class="blk">
+          <div class="cap">联系</div>
+          <p style="font-size:13px;color:var(--fg-2);line-height:1.8;">
+            抖音私信 <span class="mono" style="color:var(--muted)">omegapaopao</span><br />
+            <a href="https://www.douyin.com/user/MS4wLjABAAAAMqgfrztD7OkhkUauJIzvrUXBHewXGIhh1n4PWkAAE0Jr-bvD_BGKuwafLwWvpoSu" target="_blank" rel="noopener" style="color:var(--accent-hi)">主页评论区留言</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="sec" id="repos" data-od-id="repos">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow" data-rv>我的其他开源项目</p>
+          <h2 class="h2" data-rv style="--d:.06s;margin-top:16px;">抖音之外，也在 GitHub 上写东西。</h2>
+        </div>
+        <a class="btn-plain" href="https://github.com/omegapaopao" target="_blank" rel="noopener"
+           data-rv style="--d:.12s">看 GitHub 主页 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
+      </div>
+      <div class="grid repos">
+        <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><a class="repo" href="https://github.com/omegapaopao/aweis-smart-turtle-tank" target="_blank" rel="noopener">
+          <div class="rh"><span class="rn">aweis-smart-turtle-tank</span><span class="rs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 2.4l1.7 3.5 3.8.55-2.75 2.7.65 3.8L8 11.1l-3.4 1.85.65-3.8L2.5 6.45l3.8-.55L8 2.4z"/></svg>2</span></div>
+          <p class="rd">阿伟的智能龟缸 — 基于BLE物联网与边缘-云协同架构的爬行动物栖息环境实时监控系统</p>
+          <div class="rf"><span class="lg"><i></i>JavaScript</span><span>2026-05-22 最后更新</span></div>
+        </a><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><a class="repo" href="https://github.com/omegapaopao/dsh-chibi-whale" target="_blank" rel="noopener">
+          <div class="rh"><span class="rn">dsh-chibi-whale</span><span class="rs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 2.4l1.7 3.5 3.8.55-2.75 2.7.65 3.8L8 11.1l-3.4 1.85.65-3.8L2.5 6.45l3.8-.55L8 2.4z"/></svg>2</span></div>
+          <p class="rd">一只只会吃 token 的蓝色大肥鱼，给自己的鲸鱼娘造型建模的失败记录。程序化 Blender 建模 + 9 条实测踩坑。</p>
+          <div class="rf"><span class="lg"><i></i>Python</span><span>2026-09-19 最后更新</span></div>
+        </a><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.10s"><div class="shell glow lift" ><div class="core"><a class="repo" href="https://github.com/omegapaopao/dsh-open-design" target="_blank" rel="noopener">
+          <div class="rh"><span class="rn">dsh-open-design</span><span class="rs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 2.4l1.7 3.5 3.8.55-2.75 2.7.65 3.8L8 11.1l-3.4 1.85.65-3.8L2.5 6.45l3.8-.55L8 2.4z"/></svg>2</span></div>
+          <p class="rd">OpenDesign bridge for DeepSeek Harness: OpenDesign&#x27;s rendering templates, craft skills and design systems as native dsh skills.</p>
+          <div class="rf"><span class="lg"><i></i>HTML</span><span>2026-09-16 最后更新</span></div>
+        </a><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.15s"><div class="shell glow lift" ><div class="core"><a class="repo" href="https://github.com/omegapaopao/tieji-miniprogram" target="_blank" rel="noopener">
+          <div class="rh"><span class="rn">tieji-miniprogram</span><span class="rs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 2.4l1.7 3.5 3.8.55-2.75 2.7.65 3.8L8 11.1l-3.4 1.85.65-3.8L2.5 6.45l3.8-.55L8 2.4z"/></svg>2</span></div>
+          <p class="rd">铁记 · 力量训练日志微信小程序 — 记录、图表、计时、AI分析</p>
+          <div class="rf"><span class="lg"><i></i>JavaScript</span><span>2026-05-22 最后更新</span></div>
+        </a><span class="sheen"></span></div></div></div>
+        <div data-rv style="--d:0.20s"><div class="shell glow lift" ><div class="core"><a class="repo" href="https://github.com/omegapaopao/made-in-heaven" target="_blank" rel="noopener">
+          <div class="rh"><span class="rn">made-in-heaven</span><span class="rs"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M8 2.4l1.7 3.5 3.8.55-2.75 2.7.65 3.8L8 11.1l-3.4 1.85.65-3.8L2.5 6.45l3.8-.55L8 2.4z"/></svg>1</span></div>
+          <p class="rd">次世代网页视频倍速引擎 —— 基于原生 DOM 事件总线的零依赖高性能视频操控系统。</p>
+          <div class="rf"><span class="lg"><i></i>HTML</span><span>2026-05-17 最后更新</span></div>
+        </a><span class="sheen"></span></div></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec closing" data-od-id="closing">
+    <div class="container">
+      <h2 data-rv>想看我把下一个工具拆开讲？</h2>
+      <p class="lead" data-rv style="--d:.08s">抖音搜「Omega泡泡怪」，25 条内容从装环境讲到跑通工作流。</p>
+      <div data-rv style="--d:.14s"><a class="btn btn-primary" id="magBtn2" href="https://www.douyin.com/user/MS4wLjABAAAAMqgfrztD7OkhkUauJIzvrUXBHewXGIhh1n4PWkAAE0Jr-bvD_BGKuwafLwWvpoSu" target="_blank" rel="noopener">打开抖音主页<span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></span></a></div>
+    </div>
+  </section>
+  <footer class="foot" data-od-id="footer">
+    <div class="container in">
+      <span>© 2026 Omega泡泡怪「玩AI版」</span>
+      <span>抖音号 omegapaopao · 福建厦门 · 数据抓取 2026-10-06</span>
+    </div>
+  </footer>
+</main>
+</div>
+  <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="作品详情">
+    <button class="close" id="lbClose" aria-label="关闭">
+      <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+    </button>
+    <div class="panel">
+      <img id="lbImg" src="" alt="" width="323" height="430" />
+      <div>
+        <div class="play" id="lbPlay"></div>
+        <h3 id="lbTitle"></h3>
+        <div class="meta"><span id="lbDate"></span></div>
+        <div class="meta" id="lbTags" style="margin-top:8px"></div>
+        <div class="actions">
+          <a class="btn btn-primary" id="lbLink" href="https://www.douyin.com/user/MS4wLjABAAAAMqgfrztD7OkhkUauJIzvrUXBHewXGIhh1n4PWkAAE0Jr-bvD_BGKuwafLwWvpoSu" target="_blank" rel="noopener">去抖音看<span class="ico"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></span></a>
+          <span class="mono" style="font-size:11px;color:var(--dim)">Esc 关闭</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="peek" id="peek"><img id="peekImg" src="" alt="" width="323" height="430" /></div>
+  <div class="toast" id="toast">已复制抖音号 omegapaopao</div>
+  <div class="cursor" id="cursor" aria-hidden="true"><b id="cursorLabel">查看</b></div>
+  <button class="totop" id="totop" aria-label="回到顶部">
+    <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.6 7.4L8 3l4.4 4.4"/></svg>
+  </button>
+<script>
+(function(){
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DATA = {"1": {"t": "零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕", "pnum": "16.0", "punit": "万", "d": "2026-09-22 17:13", "c": "assets/covers/01.jpg", "u": "https://www.douyin.com/video/7688285273457820019", "g": "#vibecoding / #deepseek / #vibecoding大赏"}, "2": {"t": "vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗", "pnum": "34.2", "punit": "万", "d": "2026-09-21 23:24", "c": "assets/covers/02.jpg", "u": "https://www.douyin.com/video/7688009863486301274", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #抖音精选"}, "3": {"t": "vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill", "pnum": "43.5", "punit": "万", "d": "2026-09-20 14:24", "c": "assets/covers/03.jpg", "u": "https://www.douyin.com/video/7687499500474829786", "g": "#github项目 / #vibecoding / #vibecoding大赏 / #deepseek"}, "4": {"t": "vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！", "pnum": "7.1", "punit": "万", "d": "2026-10-06 14:41", "c": "assets/covers/04.jpg", "u": "https://www.douyin.com/video/7693441357356927963", "g": "#deepseekharness / #vibecoding / #vibecoding大赏 / #skill"}, "5": {"t": "vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames", "pnum": "3,494", "punit": "", "d": "2026-10-05 21:03", "c": "assets/covers/05.jpg", "u": "https://www.douyin.com/video/7693168682763158106", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #skill"}, "6": {"t": "vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置", "pnum": "2.5", "punit": "万", "d": "2026-10-05 00:11", "c": "assets/covers/06.jpg", "u": "https://www.douyin.com/video/7692846019692665330", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #skills"}, "7": {"t": "DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路", "pnum": "9.7", "punit": "万", "d": "2026-10-04 19:31", "c": "assets/covers/07.jpg", "u": "https://www.douyin.com/video/7692773906797191370", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #agent搭建"}, "8": {"t": "3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份", "pnum": "3,932", "punit": "", "d": "2026-10-04 14:08", "c": "assets/covers/08.jpg", "u": "https://www.douyin.com/video/7692690540048059315", "g": "#vibecoding / #agent / #vibecoding大赏 / #deepseekharness"}, "9": {"t": "四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness", "pnum": "1,855", "punit": "", "d": "2026-09-28 19:02", "c": "assets/covers/09.jpg", "u": "https://www.douyin.com/video/7690539772246815962", "g": "#vibecoding / #deepseekharness / #vibecoding大赏"}, "10": {"t": "报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测", "pnum": "6,597", "punit": "", "d": "2026-09-26 11:18", "c": "assets/covers/10.jpg", "u": "https://www.douyin.com/video/7689678240134420874", "g": "#vibecoding大赏 / #vibecoding / #deepseek / #deepseekharness"}, "11": {"t": "<vibecoding扫盲> 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技", "pnum": "1.1", "punit": "万", "d": "2026-09-25 17:22", "c": "assets/covers/11.jpg", "u": "https://www.douyin.com/video/7689400775306530074", "g": "#抖音前沿科技首发计划 / #vibecoding / #vibecoding大赏 / #deepseek"}, "12": {"t": "DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding", "pnum": "2.5", "punit": "万", "d": "2026-09-25 09:48", "c": "assets/covers/12.jpg", "u": "https://www.douyin.com/video/7689283793056576091", "g": "#deepseek / #vibecoding / #vibecoding大赏 / #deepseekharness"}, "13": {"t": "DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯", "pnum": "6.6", "punit": "万", "d": "2026-09-24 22:00", "c": "assets/covers/13.jpg", "u": "https://www.douyin.com/video/7689101387607501742", "g": "#deepseek / #vibecoding / #vibecoding大赏 / #skill"}, "14": {"t": "vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路", "pnum": "7.6", "punit": "万", "d": "2026-09-24 14:13", "c": "assets/covers/14.jpg", "u": "https://www.douyin.com/video/7688981138286728371", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #deepseekharness"}, "15": {"t": "充值一些票子，喂养一些肥鱼，产出一些干货", "pnum": "9,109", "punit": "", "d": "2026-09-24 11:16", "c": "assets/covers/15.jpg", "u": "https://www.douyin.com//www.douyin.com/note/7688935366296859890", "g": "#vibecoding / #deepseek / #deepseekharness / #vibecoding大赏"}, "16": {"t": "最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流", "pnum": "1.6", "punit": "万", "d": "2026-09-23 23:22", "c": "assets/covers/16.jpg", "u": "https://www.douyin.com/video/7688751448830798986", "g": "#vibecoding / #vibecoding大赏 / #jev / #deepseek"}, "17": {"t": "vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！", "pnum": "3.0", "punit": "万", "d": "2026-09-23 15:39", "c": "assets/covers/17.jpg", "u": "https://www.douyin.com/video/7688632130201076105", "g": "#vibecoding / #deepseek / #deepseekharness / #vibecoding大赏"}, "18": {"t": "零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台", "pnum": "1.2", "punit": "万", "d": "2026-09-22 21:56", "c": "assets/covers/18.jpg", "u": "https://www.douyin.com/video/7688358260767741787", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #deepseekharness"}, "19": {"t": "Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能", "pnum": "7,277", "punit": "", "d": "2026-09-21 17:19", "c": "assets/covers/19.jpg", "u": "https://www.douyin.com/video/7687915774602431206", "g": "#deepseek / #vibecoding / #vibecoding大赏"}, "20": {"t": "Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频", "pnum": "1.2", "punit": "万", "d": "2026-09-21 00:39", "c": "assets/covers/20.jpg", "u": "https://www.douyin.com/video/7687657945820079177", "g": "#ai / #vibecoding / #vibecoding大赏 / #抖音精选"}, "21": {"t": "吃白饭的用户？！压力一只大肥鱼？！", "pnum": "1.1", "punit": "万", "d": "2026-09-19 23:59", "c": "assets/covers/21.jpg", "u": "https://www.douyin.com/video/7687276759175766153", "g": "#deepseek / #vibecoding / #vibecoding大赏"}, "22": {"t": "|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测", "pnum": "1.6", "punit": "万", "d": "2026-09-19 00:46", "c": "assets/covers/22.jpg", "u": "https://www.douyin.com/video/7686917793110821491", "g": "#vibecoding / #vibecoding大赏 / #agent / #deepseek"}, "23": {"t": "|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频", "pnum": "1.0", "punit": "万", "d": "2026-09-18 21:28", "c": "assets/covers/23.jpg", "u": "https://www.douyin.com/video/7686866697751977179", "g": "#vibecoding大赏 / #deepseek / #deepseekharness / #视频剪辑"}, "24": {"t": "|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命", "pnum": "1.1", "punit": "万", "d": "2026-09-18 00:16", "c": "assets/covers/24.jpg", "u": "https://www.douyin.com/video/7686538960286009518", "g": "#blender模型 / #vibecoding大赏 / #deepseek / #不会代码但我造了个小工具"}, "25": {"t": "|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄", "pnum": "5,165", "punit": "", "d": "2026-09-16 17:02", "c": "assets/covers/25.jpg", "u": "https://www.douyin.com/video/7686055998913536138", "g": "#vibecoding / #代码工具 / #deepseek / #vibecoding大赏"}};
+  var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+
+  /* ── 滚动揭示 ── */
+  var items = $$('[data-rv], .rvimg');
+  if (RM || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: .1, rootMargin: '0px 0px -5% 0px' });
+    items.forEach(function(el){ io.observe(el); });
+  }
+  function revealVisible(){
+    var vh = window.innerHeight;
+    $$('[data-rv]:not(.in), .rvimg:not(.in)').forEach(function(el){
+      var r = el.getBoundingClientRect();
+      if (r.top < vh*1.05 && r.bottom > -60) el.classList.add('in');
+    });
+  }
+  setTimeout(revealVisible, 1400);
+  window.addEventListener('load', function(){ setTimeout(revealVisible, 250); });
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) revealVisible(); });
+
+  /* ── 动效状态 ── */
+  var prog = document.getElementById('progress'), nav = document.getElementById('nav');
+  var totop = document.getElementById('totop');
+  var skewEls = $$('[data-skew]');
+  prog.style.transformOrigin = 'left';
+  var wall = document.getElementById('wall'), wallTrack = document.getElementById('wallTrack'),
+      wallBar = document.getElementById('wallBar'), wallDist = 0;
+  function measureWall(){
+    if (!wall || !wallTrack) return;
+    if (window.innerWidth <= 940) {           // 竖屏/窄屏：交给原生横滑
+      wallDist = 0;
+      wall.style.height = 'auto';
+      wallTrack.style.transform = '';
+      return;
+    }
+    wallDist = Math.max(0, wallTrack.scrollWidth - window.innerWidth + 40);
+    wall.style.height = (window.innerHeight + wallDist) + 'px';
+  }
+  if (wall) {
+    measureWall();
+    window.addEventListener('resize', measureWall);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureWall);
+    $$('.wcard img', wall).forEach(function(im){ im.addEventListener('load', measureWall); });
+  }
+
+  /* ── 导航高亮（scrollspy） ── */
+  var links = $$('.nav .links a');
+  var secs = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  if ('IntersectionObserver' in window && secs.length) {
+    var spy = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) return;
+        links.forEach(function(a){ a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    secs.forEach(function(s){ spy.observe(s); });
+  }
+
+  /* ── 统一动效循环：聚光 / 光标环 / 封面墙 / 速度倾斜 / 进度条 ── */
+  var spot = document.querySelector('.spot');
+  var HOVER = window.matchMedia('(hover: hover)').matches;
+  var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  var spotOn = false, spx = mx, spy = my;
+  var cur = document.getElementById('cursor'), curLabel = document.getElementById('cursorLabel');
+  var curOn = false, curHot = false, cux = mx, cuy = my;
+  var skew = 0, lastY = window.scrollY;
+
+  window.addEventListener('pointermove', function(e){
+    mx = e.clientX; my = e.clientY;
+    if (!spotOn && spot && HOVER && !RM) { spotOn = true; spot.style.opacity = '1'; }
+    if (!curOn && cur && HOVER && !RM) {
+      curOn = true; cur.classList.add('on'); cux = mx; cuy = my;
+    }
+    if (curOn && cur) {
+      var hit = e.target.closest ? e.target.closest('[data-open]') : null;
+      var any = e.target.closest ? e.target.closest('a,button,.tag,.seg button,.wcard') : null;
+      var hot = !!hit;
+      if (hot !== curHot) { curHot = hot; cur.classList.toggle('hot', hot); }
+      if (curLabel) curLabel.textContent = hot ? '查看' : '';
+      cur.style.width = ''; cur.style.height = '';
+    }
+  }, { passive: true });
+  document.addEventListener('mouseleave', function(){
+    if (spot) spot.style.opacity = '0';
+    spotOn = false;
+    if (cur) cur.classList.remove('on');
+    curOn = false;
+  });
+
+  function tick(){
+    var y = window.scrollY;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.transform = 'scaleX(' + (docH > 0 ? Math.min(1, y / docH) : 0) + ')';
+    nav.classList.toggle('scrolled', y > 30);
+    if (totop) totop.classList.toggle('show', y > 760);
+
+    // 滚动速度 → 倾斜（带阻尼回正）
+    var v = y - lastY; lastY = y;
+    var want = Math.max(-2.6, Math.min(2.6, v * 0.045));
+    skew += (want - skew) * 0.14;
+    if (Math.abs(skew) < 0.006) skew = 0;
+    if (skewEls.length) {
+      var sv = skew.toFixed(3) + 'deg';
+      for (var i = 0; i < skewEls.length; i++) skewEls[i].style.setProperty('--skew', sv);
+    }
+
+    // 封面墙横向推进（窄屏走原生横滑，不接管）
+    if (wall && wallTrack && window.innerWidth > 940) {
+      var r = wall.getBoundingClientRect();
+      var total = wall.offsetHeight - window.innerHeight;
+      var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+      wallTrack.style.transform = 'translate3d(' + (-p * wallDist).toFixed(1) + 'px,0,0)';
+      if (wallBar) wallBar.style.width = (p * 100).toFixed(2) + '%';
+    }
+
+    if (spotOn && spot) {
+      spx += (mx - spx) * 0.12; spy += (my - spy) * 0.12;
+      spot.style.transform = 'translate3d(' + (spx - 280).toFixed(1) + 'px,' + (spy - 280).toFixed(1) + 'px,0)';
+    }
+    if (curOn && cur) {
+      cux += (mx - cux) * 0.2; cuy += (my - cuy) * 0.2;
+      cur.style.transform = 'translate3d(' + cux.toFixed(1) + 'px,' + cuy.toFixed(1) + 'px,0)';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  /* ── 回到顶部 ── */
+  if (totop) totop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: RM ? 'auto' : 'smooth' });
+  });
+
+  /* ── 点击涟漪 ── */
+  document.addEventListener('pointerdown', function(e){
+    if (RM) return;
+    var host = e.target.closest ? e.target.closest('.btn,.work,.feat,.wcard,.row,.coll-card') : null;
+    if (!host) return;
+    var box = host.querySelector('.core') || host;
+    var r = box.getBoundingClientRect();
+    var sp = document.createElement('span');
+    sp.className = 'ripple';
+    sp.style.left = (e.clientX - r.left) + 'px';
+    sp.style.top = (e.clientY - r.top) + 'px';
+    box.appendChild(sp);
+    setTimeout(function(){ if (sp.parentNode) sp.parentNode.removeChild(sp); }, 760);
+  });
+
+  /* ── 磁吸按钮 ── */
+  if (!RM && window.matchMedia('(hover: hover)').matches) {
+    $$('.btn-primary').forEach(function(b){
+      b.addEventListener('pointermove', function(e){
+        var r = b.getBoundingClientRect();
+        var dx = (e.clientX - (r.left + r.width/2)) / r.width;
+        var dy = (e.clientY - (r.top + r.height/2)) / r.height;
+        b.style.transform = 'translate3d(' + (dx*9).toFixed(1) + 'px,' + (dy*6).toFixed(1) + 'px,0)';
+      });
+      b.addEventListener('pointerleave', function(){ b.style.transform = ''; });
+    });
+  }
+
+  /* ── 卡片聚光边框 ── */
+  if (window.matchMedia('(hover: hover)').matches) {
+    $$('.shell.glow').forEach(function(s){
+      s.addEventListener('pointermove', function(e){
+        var r = s.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        s.style.setProperty('--mx', x + 'px');
+        s.style.setProperty('--my', y + 'px');
+        s.style.setProperty('--sx', (100 - (x / r.width) * 100).toFixed(1) + '%');
+        s.style.setProperty('--sy', ((y / r.height) * 100).toFixed(1) + '%');
+      });
+    });
+  }
+
+  /* ── 跟手倾斜：个人卡 / 代表作 / 合集共用一套 ── */
+  if (!RM && window.matchMedia('(hover: hover)').matches) {
+    $$('[data-tilt]').forEach(function(el){
+      var amp = parseFloat(el.getAttribute('data-tilt')) || 6;
+      var box = el.closest('[data-rv]') || el.parentElement || el;
+      box.addEventListener('pointermove', function(e){
+        var r = el.getBoundingClientRect();
+        var dx = (e.clientX - r.left) / r.width - .5;
+        var dy = (e.clientY - r.top) / r.height - .5;
+        el.style.setProperty('--ry', (dx * amp).toFixed(2) + 'deg');
+        el.style.setProperty('--rx', (-dy * amp).toFixed(2) + 'deg');
+      });
+      box.addEventListener('pointerleave', function(){
+        el.style.setProperty('--ry', '0deg');
+        el.style.setProperty('--rx', '0deg');
+      });
+    });
+  }
+
+  /* ── 数字滚动 ── */
+  function countUp(el){
+    var raw = String(el.getAttribute('data-count')).replace(/,/g, '');
+    var target = parseFloat(raw);
+    if (isNaN(target)) return;
+    var dec = (raw.split('.')[1] || '').length, start = performance.now(), dur = 1100;
+    function fmt(v){ return dec ? v.toFixed(dec) : Math.round(v).toLocaleString('en-US'); }
+    function setFinal(){ el.firstChild.nodeValue = fmt(target); }
+    // 兜底：标签页被节流 / rAF 暂停时，到点仍写入最终值
+    var guard = setTimeout(setFinal, dur + 400);
+    (function tick(now){
+      var t = Math.min(1, (now - start)/dur);
+      if (t >= 1) { clearTimeout(guard); setFinal(); return; }
+      el.firstChild.nodeValue = fmt(target * (1 - Math.pow(1 - t, 4)));
+      requestAnimationFrame(tick);
+    })(start);
+  }
+  var nums = $$('[data-count]');
+  if (!RM && 'IntersectionObserver' in window) {
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) { countUp(e.target); io2.unobserve(e.target); } });
+    }, { threshold: .6 });
+    nums.forEach(function(el){ io2.observe(el); });
+  }
+
+  /* ── 移动菜单 ── */
+  var toggle = document.getElementById('navToggle'), overlay = document.getElementById('overlay');
+  function setMenu(open){
+    toggle.classList.toggle('open', open); overlay.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  toggle.addEventListener('click', function(){ setMenu(!overlay.classList.contains('open')); });
+  $$('a', overlay).forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+
+  /* ── 复制抖音号 ── */
+  var copyBtn = document.getElementById('copyId'), toast = document.getElementById('toast');
+  if (copyBtn) copyBtn.addEventListener('click', function(){
+    var v = copyBtn.getAttribute('data-copy');
+    var done = function(){
+      toast.classList.add('show');
+      setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(v).then(done)['catch'](function(){ fallback(); done(); });
+    } else { fallback(); done(); }
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = v; document.body.appendChild(ta);
+      ta.select(); try { document.execCommand('copy'); } catch(e){} document.body.removeChild(ta);
+    }
+  });
+
+  /* ── 筛选 + 搜索 + 排序 ── */
+  var tier = 'all', q = '', sort = 'date';
+  var list = document.getElementById('list'), empty = document.getElementById('empty');
+  var rows = $$('.row', list);
+  var dateOrder = rows.slice();
+  var playOrder = rows.slice().sort(function(a, b){ return (+b.dataset.play) - (+a.dataset.play); });
+  function apply(){
+    var shown = 0;
+    rows.forEach(function(r){
+      var okT = tier === 'all' || r.dataset.tier === tier;
+      var okQ = !q || r.dataset.title.toLowerCase().indexOf(q) >= 0;
+      var ok = okT && okQ;
+      r.classList.toggle('hide', !ok);
+      if (ok) shown++;
+    });
+    empty.style.display = shown ? 'none' : '';
+    var order = sort === 'play' ? playOrder : dateOrder;
+    order.forEach(function(r){ list.appendChild(r); });
+  }
+  $$('#tiers button').forEach(function(b){
+    b.addEventListener('click', function(){
+      tier = b.dataset.tier;
+      $$('#tiers button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      apply();
+    });
+  });
+  $$('#sorts button').forEach(function(b){
+    b.addEventListener('click', function(){
+      sort = b.dataset.sort;
+      $$('#sorts button').forEach(function(x){ x.classList.toggle('on', x === b); });
+      apply();
+    });
+  });
+  var input = document.getElementById('q');
+  var t0 = 0;
+  input.addEventListener('input', function(){
+    clearTimeout(t0);
+    t0 = setTimeout(function(){ q = input.value.trim().toLowerCase(); apply(); }, 120);
+  });
+
+  /* ── 灯箱（View Transitions 共享元素 + 兜底） ── */
+  var lb = document.getElementById('lb');
+  var lbImg = document.getElementById('lbImg');
+  var vtBusy = false;
+  function populate(idx){
+    var d = DATA[idx];
+    if (!d) return false;
+    lbImg.src = d.c;
+    lbImg.alt = d.t;
+    document.getElementById('lbPlay').innerHTML = d.pnum + (d.punit ? '<i>' + d.punit + '</i>' : '');
+    document.getElementById('lbTitle').textContent = d.t;
+    document.getElementById('lbDate').textContent = d.d;
+    document.getElementById('lbTags').textContent = d.g;
+    document.getElementById('lbLink').href = d.u;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    return true;
+  }
+  function clearVT(src){ src.style.viewTransitionName = ''; lbImg.style.viewTransitionName = ''; vtBusy = false; }
+  function openLb(idx, host){
+    if (!DATA[idx]) return;
+    var src = host ? host.querySelector('img') : null;
+    if (document.startViewTransition && !RM && src && !vtBusy) {
+      try {
+        vtBusy = true;
+        src.style.viewTransitionName = 'wtwork';
+        lbImg.style.viewTransitionName = 'wtwork';
+        var vt = document.startViewTransition(function(){ populate(idx); });
+        vt.finished.then(function(){ clearVT(src); }, function(){ clearVT(src); });
+        return;
+      } catch (err) {
+        clearVT(src);          // 任何异常都退回普通开合，不能把灯箱锁死
+      }
+    }
+    populate(idx);
+  }
+  function closeLb(){ lb.classList.remove('open'); document.body.style.overflow = ''; }
+  document.addEventListener('click', function(e){
+    var host = e.target.closest ? e.target.closest('[data-open]') : null;
+    if (host) openLb(host.getAttribute('data-open'), host);
+  });
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { closeLb(); setMenu(false); } });
+
+  /* ── 列表悬停缩略预览 ── */
+  var peek = document.getElementById('peek'), peekImg = document.getElementById('peekImg');
+  if (peek && !RM && window.matchMedia('(hover: hover)').matches) {
+    var px = 0, py = 0;
+    list.addEventListener('pointerover', function(e){
+      var r = e.target.closest ? e.target.closest('.row') : null;
+      if (!r) return;
+      var idx = r.dataset.idx, d = DATA[idx];
+      if (!d) return;
+      if (peekImg.getAttribute('src') !== d.c) peekImg.setAttribute('src', d.c);
+      peek.classList.add('on');
+    });
+    list.addEventListener('pointerout', function(e){
+      var to = e.relatedTarget;
+      if (!to || !to.closest || !to.closest('.row')) peek.classList.remove('on');
+    });
+    list.addEventListener('pointermove', function(e){
+      px = e.clientX; py = e.clientY;
+      var w = 132, h = w * 430 / 323;
+      var left = Math.min(window.innerWidth - w - 18, px + 20);
+      var top = Math.max(12, Math.min(window.innerHeight - h - 12, py - h/2));
+      peek.style.left = left + 'px'; peek.style.top = top + 'px';
+    }, { passive: true });
+  }
+})();
+</script>
+</body>
+</html>
