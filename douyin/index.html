@@ -20,7 +20,15 @@
 <meta name="twitter:description" content="21 天 25 条作品，累计 146.3 万播放。DeepSeek Harness 与 vibe coding 内容。" />
 <meta name="twitter:image" content="https://omegapaopao.github.io/douyin/assets/og.jpg" />
 <title>Omega泡泡怪「玩AI版」· AI 创作者作品集</title>
-<script>document.documentElement.classList.add('js');</script>
+<script>
+  document.documentElement.classList.add('js');
+  // 兜底：主脚本若未在 1.2s 内就绪（报错/被拦截），直接取消隐藏，任何内容都不会被藏在 JS 后面
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('rv-init')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 1200);
+</script>
 <style>
 @font-face{font-family:'Space Grotesk';src:url('assets/fonts/space-grotesk-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:'Space Grotesk';src:url('assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
@@ -439,10 +447,8 @@ h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--font-display);font-weig
 /* ── 滚动速度倾斜 ───────────────────────────────────── */
 [data-skew]{transform:skewY(var(--skew,0deg))}
 
-/* ── 图片遮罩揭示（无 JS 时不做隐藏） ───────────────── */
-.js .rvimg{clip-path:inset(0 0 100% 0);transition:clip-path 1.05s var(--ease) var(--d,0s)}
-.js .rvimg.in{clip-path:inset(0 0 0 0)}
-@media (prefers-reduced-motion:reduce){.js .rvimg{clip-path:none;transition:none}}
+/* ── 图片不做遮罩揭示：曾用 clip-path 隐藏，一旦 JS/IO 未触发封面会永久黑屏。
+     封面改用纯 hover 放大（见 .work / .wcard），任何情况下都不会遮挡内容。 ── */
 
 /* ── 封面墙（钉住 + 横向滚动） ──────────────────────── */
 .wall{position:relative}
@@ -779,7 +785,7 @@ html{-webkit-tap-highlight-color:transparent}
         <a class="btn-plain" href="#all" data-rv style="--d:.12s">看全部 25 条 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12L12 4M6 4h6v6"/></svg></a>
       </div>
       <div data-rv><div class="shell glow" data-tilt="5"><div class="core"><article class="feat" data-open="3">
-        <div class="thumb"><img class="rvimg" src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill" width="323" height="430" /></div>
+        <div class="thumb"><img src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill" width="323" height="430" /></div>
         <div class="body">
           <div class="play">43.5<i>万</i></div>
           <h3>vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill</h3>
@@ -790,7 +796,7 @@ html{-webkit-tap-highlight-color:transparent}
       <div class="grid works" data-skew style="margin-top:clamp(13px,1.6vw,20px)">
         <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="2">
           <div class="thumbwrap">
-            <img class="rvimg" src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个" width="323" height="430" loading="lazy" />
+            <img src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个" width="323" height="430" loading="lazy" />
             <span class="rank">TOP 2</span>
             <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>34.2万</div>
           </div>
@@ -801,7 +807,7 @@ html{-webkit-tap-highlight-color:transparent}
         </article><span class="sheen"></span></div></div></div>
         <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="1">
           <div class="thumbwrap">
-            <img class="rvimg" src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、promp" width="323" height="430" loading="lazy" />
+            <img src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、promp" width="323" height="430" loading="lazy" />
             <span class="rank">TOP 3</span>
             <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>16.0万</div>
           </div>
@@ -812,7 +818,7 @@ html{-webkit-tap-highlight-color:transparent}
         </article><span class="sheen"></span></div></div></div>
         <div data-rv style="--d:0.10s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="7">
           <div class="thumbwrap">
-            <img class="rvimg" src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面" width="323" height="430" loading="lazy" />
+            <img src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面" width="323" height="430" loading="lazy" />
             <span class="rank">TOP 4</span>
             <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>9.7万</div>
           </div>
@@ -823,7 +829,7 @@ html{-webkit-tap-highlight-color:transparent}
         </article><span class="sheen"></span></div></div></div>
         <div data-rv style="--d:0.00s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="14">
           <div class="thumbwrap">
-            <img class="rvimg" src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MC" width="323" height="430" loading="lazy" />
+            <img src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MC" width="323" height="430" loading="lazy" />
             <span class="rank">TOP 5</span>
             <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>7.6万</div>
           </div>
@@ -834,7 +840,7 @@ html{-webkit-tap-highlight-color:transparent}
         </article><span class="sheen"></span></div></div></div>
         <div data-rv style="--d:0.05s"><div class="shell glow lift" ><div class="core"><article class="work" data-open="4">
           <div class="thumbwrap">
-            <img class="rvimg" src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？" width="323" height="430" loading="lazy" />
+            <img src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？" width="323" height="430" loading="lazy" />
             <span class="rank">TOP 6</span>
             <div class="play-badge"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 3.2v9.6l8-4.8-8-4.8z"/></svg>7.1万</div>
           </div>
@@ -854,151 +860,151 @@ html{-webkit-tap-highlight-color:transparent}
       </div>
       <div class="wall-track" id="wallTrack">
         <article class="wcard" data-open="4">
-          <div class="wi"><img class="rvimg" src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么"
+          <div class="wi"><img src="assets/covers/04.jpg" alt="vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么"
             width="323" height="430" loading="lazy" /><span class="wn">7.1万</span></div>
           <div class="wt">vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！</div>
           <div class="wd"><span>2026-10-06</span><span>14:41</span></div>
         </article>
         <article class="wcard" data-open="5">
-          <div class="wi"><img class="rvimg" src="assets/covers/05.jpg" alt="vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满"
+          <div class="wi"><img src="assets/covers/05.jpg" alt="vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满"
             width="323" height="430" loading="lazy" /><span class="wn">3,494</span></div>
           <div class="wt">vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames</div>
           <div class="wd"><span>2026-10-05</span><span>21:03</span></div>
         </article>
         <article class="wcard" data-open="6">
-          <div class="wi"><img class="rvimg" src="assets/covers/06.jpg" alt="vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万ski"
+          <div class="wi"><img src="assets/covers/06.jpg" alt="vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万ski"
             width="323" height="430" loading="lazy" /><span class="wn">2.5万</span></div>
           <div class="wt">vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置</div>
           <div class="wd"><span>2026-10-05</span><span>00:11</span></div>
         </article>
         <article class="wcard" data-open="7">
-          <div class="wi"><img class="rvimg" src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一"
+          <div class="wi"><img src="assets/covers/07.jpg" alt="DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一"
             width="323" height="430" loading="lazy" /><span class="wn">9.7万</span></div>
           <div class="wt">DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路</div>
           <div class="wd"><span>2026-10-04</span><span>19:31</span></div>
         </article>
         <article class="wcard" data-open="8">
-          <div class="wi"><img class="rvimg" src="assets/covers/08.jpg" alt="3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，"
+          <div class="wi"><img src="assets/covers/08.jpg" alt="3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，"
             width="323" height="430" loading="lazy" /><span class="wn">3,932</span></div>
           <div class="wt">3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份</div>
           <div class="wd"><span>2026-10-04</span><span>14:08</span></div>
         </article>
         <article class="wcard" data-open="9">
-          <div class="wi"><img class="rvimg" src="assets/covers/09.jpg" alt="四款产品，DSH到底特别在哪？ claudecode | codex | workbud"
+          <div class="wi"><img src="assets/covers/09.jpg" alt="四款产品，DSH到底特别在哪？ claudecode | codex | workbud"
             width="323" height="430" loading="lazy" /><span class="wn">1,855</span></div>
           <div class="wt">四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness</div>
           <div class="wd"><span>2026-09-28</span><span>19:02</span></div>
         </article>
         <article class="wcard" data-open="10">
-          <div class="wi"><img class="rvimg" src="assets/covers/10.jpg" alt="报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Age"
+          <div class="wi"><img src="assets/covers/10.jpg" alt="报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Age"
             width="323" height="430" loading="lazy" /><span class="wn">6,597</span></div>
           <div class="wt">报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测</div>
           <div class="wd"><span>2026-09-26</span><span>11:18</span></div>
         </article>
         <article class="wcard" data-open="11">
-          <div class="wi"><img class="rvimg" src="assets/covers/11.jpg" alt="&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP "
+          <div class="wi"><img src="assets/covers/11.jpg" alt="&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP "
             width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
           <div class="wt">&lt;vibecoding扫盲&gt; 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技</div>
           <div class="wd"><span>2026-09-25</span><span>17:22</span></div>
         </article>
         <article class="wcard" data-open="12">
-          <div class="wi"><img class="rvimg" src="assets/covers/12.jpg" alt="DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 "
+          <div class="wi"><img src="assets/covers/12.jpg" alt="DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 "
             width="323" height="430" loading="lazy" /><span class="wn">2.5万</span></div>
           <div class="wt">DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding</div>
           <div class="wd"><span>2026-09-25</span><span>09:48</span></div>
         </article>
         <article class="wcard" data-open="13">
-          <div class="wi"><img class="rvimg" src="assets/covers/13.jpg" alt="DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一"
+          <div class="wi"><img src="assets/covers/13.jpg" alt="DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一"
             width="323" height="430" loading="lazy" /><span class="wn">6.6万</span></div>
           <div class="wt">DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯</div>
           <div class="wd"><span>2026-09-24</span><span>22:00</span></div>
         </article>
         <article class="wcard" data-open="14">
-          <div class="wi"><img class="rvimg" src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人"
+          <div class="wi"><img src="assets/covers/14.jpg" alt="vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人"
             width="323" height="430" loading="lazy" /><span class="wn">7.6万</span></div>
           <div class="wt">vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路</div>
           <div class="wd"><span>2026-09-24</span><span>14:13</span></div>
         </article>
         <article class="wcard" data-open="15">
-          <div class="wi"><img class="rvimg" src="assets/covers/15.jpg" alt="充值一些票子，喂养一些肥鱼，产出一些干货"
+          <div class="wi"><img src="assets/covers/15.jpg" alt="充值一些票子，喂养一些肥鱼，产出一些干货"
             width="323" height="430" loading="lazy" /><span class="wn">9,109</span></div>
           <div class="wt">充值一些票子，喂养一些肥鱼，产出一些干货</div>
           <div class="wd"><span>2026-09-24</span><span>11:16</span></div>
         </article>
         <article class="wcard" data-open="16">
-          <div class="wi"><img class="rvimg" src="assets/covers/16.jpg" alt="最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会"
+          <div class="wi"><img src="assets/covers/16.jpg" alt="最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会"
             width="323" height="430" loading="lazy" /><span class="wn">1.6万</span></div>
           <div class="wt">最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流</div>
           <div class="wd"><span>2026-09-23</span><span>23:22</span></div>
         </article>
         <article class="wcard" data-open="17">
-          <div class="wi"><img class="rvimg" src="assets/covers/17.jpg" alt="vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让D"
+          <div class="wi"><img src="assets/covers/17.jpg" alt="vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让D"
             width="323" height="430" loading="lazy" /><span class="wn">3.0万</span></div>
           <div class="wt">vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！</div>
           <div class="wd"><span>2026-09-23</span><span>15:39</span></div>
         </article>
         <article class="wcard" data-open="18">
-          <div class="wi"><img class="rvimg" src="assets/covers/18.jpg" alt="零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harn"
+          <div class="wi"><img src="assets/covers/18.jpg" alt="零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harn"
             width="323" height="430" loading="lazy" /><span class="wn">1.2万</span></div>
           <div class="wt">零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台</div>
           <div class="wd"><span>2026-09-22</span><span>21:56</span></div>
         </article>
         <article class="wcard" data-open="1">
-          <div class="wi"><img class="rvimg" src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent"
+          <div class="wi"><img src="assets/covers/01.jpg" alt="零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent"
             width="323" height="430" loading="lazy" /><span class="wn">16.0万</span></div>
           <div class="wt">零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕</div>
           <div class="wd"><span>2026-09-22</span><span>17:13</span></div>
         </article>
         <article class="wcard" data-open="2">
-          <div class="wi"><img class="rvimg" src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10"
+          <div class="wi"><img src="assets/covers/02.jpg" alt="vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10"
             width="323" height="430" loading="lazy" /><span class="wn">34.2万</span></div>
           <div class="wt">vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗</div>
           <div class="wd"><span>2026-09-21</span><span>23:24</span></div>
         </article>
         <article class="wcard" data-open="19">
-          <div class="wi"><img class="rvimg" src="assets/covers/19.jpg" alt="Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击"
+          <div class="wi"><img src="assets/covers/19.jpg" alt="Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击"
             width="323" height="430" loading="lazy" /><span class="wn">7,277</span></div>
           <div class="wt">Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能</div>
           <div class="wd"><span>2026-09-21</span><span>17:19</span></div>
         </article>
         <article class="wcard" data-open="20">
-          <div class="wi"><img class="rvimg" src="assets/covers/20.jpg" alt="Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显"
+          <div class="wi"><img src="assets/covers/20.jpg" alt="Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显"
             width="323" height="430" loading="lazy" /><span class="wn">1.2万</span></div>
           <div class="wt">Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频</div>
           <div class="wd"><span>2026-09-21</span><span>00:39</span></div>
         </article>
         <article class="wcard" data-open="3">
-          <div class="wi"><img class="rvimg" src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要"
+          <div class="wi"><img src="assets/covers/03.jpg" alt="vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要"
             width="323" height="430" loading="lazy" /><span class="wn">43.5万</span></div>
           <div class="wt">vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill</div>
           <div class="wd"><span>2026-09-20</span><span>14:24</span></div>
         </article>
         <article class="wcard" data-open="21">
-          <div class="wi"><img class="rvimg" src="assets/covers/21.jpg" alt="吃白饭的用户？！压力一只大肥鱼？！"
+          <div class="wi"><img src="assets/covers/21.jpg" alt="吃白饭的用户？！压力一只大肥鱼？！"
             width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
           <div class="wt">吃白饭的用户？！压力一只大肥鱼？！</div>
           <div class="wd"><span>2026-09-19</span><span>23:59</span></div>
         </article>
         <article class="wcard" data-open="22">
-          <div class="wi"><img class="rvimg" src="assets/covers/22.jpg" alt="|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一"
+          <div class="wi"><img src="assets/covers/22.jpg" alt="|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一"
             width="323" height="430" loading="lazy" /><span class="wn">1.6万</span></div>
           <div class="wt">|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测</div>
           <div class="wd"><span>2026-09-19</span><span>00:46</span></div>
         </article>
         <article class="wcard" data-open="23">
-          <div class="wi"><img class="rvimg" src="assets/covers/23.jpg" alt="|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything"
+          <div class="wi"><img src="assets/covers/23.jpg" alt="|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything"
             width="323" height="430" loading="lazy" /><span class="wn">1.0万</span></div>
           <div class="wt">|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频</div>
           <div class="wd"><span>2026-09-18</span><span>21:28</span></div>
         </article>
         <article class="wcard" data-open="24">
-          <div class="wi"><img class="rvimg" src="assets/covers/24.jpg" alt="|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一"
+          <div class="wi"><img src="assets/covers/24.jpg" alt="|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一"
             width="323" height="430" loading="lazy" /><span class="wn">1.1万</span></div>
           <div class="wt">|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命</div>
           <div class="wd"><span>2026-09-18</span><span>00:16</span></div>
         </article>
         <article class="wcard" data-open="25">
-          <div class="wi"><img class="rvimg" src="assets/covers/25.jpg" alt="|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让"
+          <div class="wi"><img src="assets/covers/25.jpg" alt="|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让"
             width="323" height="430" loading="lazy" /><span class="wn">5,165</span></div>
           <div class="wt">|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄</div>
           <div class="wd"><span>2026-09-16</span><span>17:02</span></div>
@@ -1349,12 +1355,13 @@ html{-webkit-tap-highlight-color:transparent}
   </button>
 <script>
 (function(){
+  document.documentElement.classList.add('rv-init');   // 告诉兜底脚本：主逻辑已在跑
   var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var DATA = {"1": {"t": "零基础VibeCoding扫盲| 一次性讲懂vibecoding、token、agent、prompt、API、MCP、DSH， 重点区分很多人搞混的Skill和插件，看完不再被圈内黑话绕晕", "pnum": "16.0", "punit": "万", "d": "2026-09-22 17:13", "c": "assets/covers/01.jpg", "u": "https://www.douyin.com/video/7688285273457820019", "g": "#vibecoding / #deepseek / #vibecoding大赏"}, "2": {"t": "vibecoding大赏| 同样用DeepSeek V4.1 Flash，为什么别人10元余额跑多个项目，你做个PPT就疯狂耗光token？ 整理5个DSH省Token热门Skill： 1⃣上下文医生：审计上下文，排查重复冲突指令 2⃣save‑token：无损压缩工具返回结果，实测省19%token 3⃣dsh‑context：可视化token消耗、缓存、工具单价 4⃣MemOS：跨会话记忆，避免重复交代背景，节省35%token 5⃣Distilly：思维蒸馏成技能，从根源减少token消耗", "pnum": "34.2", "punit": "万", "d": "2026-09-21 23:24", "c": "assets/covers/02.jpg", "u": "https://www.douyin.com/video/7688009863486301274", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #抖音精选"}, "3": {"t": "vibecoding大赏|如果让我回到第一次用 DSH 的那天……我其他什么都不装，也要先装这五个 skill", "pnum": "43.5", "punit": "万", "d": "2026-09-20 14:24", "c": "assets/covers/03.jpg", "u": "https://www.douyin.com/video/7687499500474829786", "g": "#github项目 / #vibecoding / #vibecoding大赏 / #deepseek"}, "4": {"t": "vibecoding大赏| 装完 DeepSeek Harness 一脸茫然不知道装什么Skill？ 这期全球下载量TOP5skill，每个讲清楚能干什么！", "pnum": "7.1", "punit": "万", "d": "2026-10-06 14:41", "c": "assets/covers/04.jpg", "u": "https://www.douyin.com/video/7693441357356927963", "g": "#deepseekharness / #vibecoding / #vibecoding大赏 / #skill"}, "5": {"t": "vibecoding大赏| 实用视频工具 5款开源视频skill，直接把你的剪辑效率拉满 1. MoneyPrinterTurbo 2. OpenCut 3. OpenMontage 4. Remotion 5. HyperFrames", "pnum": "3,494", "punit": "", "d": "2026-10-05 21:03", "c": "assets/covers/05.jpg", "u": "https://www.douyin.com/video/7693168682763158106", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #skill"}, "6": {"t": "vibecoding大赏| 还在全网到处找Skills？Cocoloop全网十七万skills一键安装，手残党福音！海量技能库直接调用，不用自己到处翻文件配置", "pnum": "2.5", "punit": "万", "d": "2026-10-05 00:11", "c": "assets/covers/06.jpg", "u": "https://www.douyin.com/video/7692846019692665330", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #skills"}, "7": {"t": "DeepseekHarness配置教程！ 刚装好 DSH ，别上来就做项目 初始化顺序一旦搞错，后面写代码全是隐性坑。 新手先把环境调教到位再开工，少走大量返工弯路", "pnum": "9.7", "punit": "万", "d": "2026-10-04 19:31", "c": "assets/covers/07.jpg", "u": "https://www.douyin.com/video/7692773906797191370", "g": "#vibecoding / #vibecoding大赏 / #deepseekharness / #agent搭建"}, "8": {"t": "3分钟深度拆解OPC——一人公司 同样是AI，有人写作业，有人靠它赚钱。 差距不在技术，而是缺少一个收钱的身份", "pnum": "3,932", "punit": "", "d": "2026-10-04 14:08", "c": "assets/covers/08.jpg", "u": "https://www.douyin.com/video/7692690540048059315", "g": "#vibecoding / #agent / #vibecoding大赏 / #deepseekharness"}, "9": {"t": "四款产品，DSH到底特别在哪？ claudecode | codex | workbuddy | deepseek harness", "pnum": "1,855", "punit": "", "d": "2026-09-28 19:02", "c": "assets/covers/09.jpg", "u": "https://www.douyin.com/video/7690539772246815962", "g": "#vibecoding / #deepseekharness / #vibecoding大赏"}, "10": {"t": "报错就往群里发？大多时候只能等来一句：重装试试！ 别再到处问人了！把完整报错丢给 Agent，让它自己查、自己改、自己实测", "pnum": "6,597", "punit": "", "d": "2026-09-26 11:18", "c": "assets/covers/10.jpg", "u": "https://www.douyin.com/video/7689678240134420874", "g": "#vibecoding大赏 / #vibecoding / #deepseek / #deepseekharness"}, "11": {"t": "<vibecoding扫盲> 90%做AI项目的人，一开始就把 Skill 和 MCP 搞混了，3分钟带你搞清。 @抖音科技", "pnum": "1.1", "punit": "万", "d": "2026-09-25 17:22", "c": "assets/covers/11.jpg", "u": "https://www.douyin.com/video/7689400775306530074", "g": "#抖音前沿科技首发计划 / #vibecoding / #vibecoding大赏 / #deepseek"}, "12": {"t": "DeepseekHarness体检| 你的 DSH 可能还没提问，就先花掉 1.5 万 token！ 省 token 其实不用改代码，直接砍三刀： ① Profile 分家 ② 清理技能目录 ③ 精简 AGENTS.md 这三块都是常驻上下文，每次请求都会带上。优化后可以明显减少无效 token 消耗。 完整的「三刀优化 token 提示词」评论区获取。关注我，带你从0入门vibecoding", "pnum": "2.5", "punit": "万", "d": "2026-09-25 09:48", "c": "assets/covers/12.jpg", "u": "https://www.douyin.com/video/7689283793056576091", "g": "#deepseek / #vibecoding / #vibecoding大赏 / #deepseekharness"}, "13": {"t": "DSH最值得装的5个插件！ 我扒完 DSH 插件市场 247 个插件，发现下载榜前五不一定真的好用！ 这期按实际用途筛出 5 个更值得装的：Better Sidebar、DSH Codex UI、DSH Context、Remote Web UI、Whale Widget。 每个都能单独出一期，其中 3 个我已经天天在用。下期发完整安装命令和配置。 关注我，每日更新 DSH相关插件＆skill资讯", "pnum": "6.6", "punit": "万", "d": "2026-09-24 22:00", "c": "assets/covers/13.jpg", "u": "https://www.douyin.com/video/7689101387607501742", "g": "#deepseek / #vibecoding / #vibecoding大赏 / #skill"}, "14": {"t": "vibecoding大赏| 为什么你的AI自动化又慢又烧token还总翻车？ 90%的人都搞混了MCP和Computer‑Use。 一个直连接口高效干活，一个靠眼睛盯着屏幕模仿人手操作。 选对路线，能少走一大段弯路", "pnum": "7.6", "punit": "万", "d": "2026-09-24 14:13", "c": "assets/covers/14.jpg", "u": "https://www.douyin.com/video/7688981138286728371", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #deepseekharness"}, "15": {"t": "充值一些票子，喂养一些肥鱼，产出一些干货", "pnum": "9,109", "punit": "", "d": "2026-09-24 11:16", "c": "assets/covers/15.jpg", "u": "https://www.douyin.com//www.douyin.com/note/7688935366296859890", "g": "#vibecoding / #deepseek / #deepseekharness / #vibecoding大赏"}, "16": {"t": "最火AI模型，居然不会聊天！ 最近AI圈冒出一个很离谱的新模型 Jev 它不会聊天、不会写作文，不干普通大模型该干的事。 但速度是 DeepSeek‑V4‑Flash 的7.6倍，输出还近乎免费。 它不逐字生成，直接输出锁死范围内的结构化判断， 适合工单分拣、内容审核、Agent快速分流", "pnum": "1.6", "punit": "万", "d": "2026-09-23 23:22", "c": "assets/covers/16.jpg", "u": "https://www.douyin.com/video/7688751448830798986", "g": "#vibecoding / #vibecoding大赏 / #jev / #deepseek"}, "17": {"t": "vibecoding大赏| 还在为生图工具充会员？ 4个免费DSH Skill，直接让DeepSeek Harness画图 插画、头像、海报、Banner、信息图、HTML落地页全能出 免费额度，注册Key两分钟搞定，省下会员费直接干饭！", "pnum": "3.0", "punit": "万", "d": "2026-09-23 15:39", "c": "assets/covers/17.jpg", "u": "https://www.douyin.com/video/7688632130201076105", "g": "#vibecoding / #deepseek / #deepseekharness / #vibecoding大赏"}, "18": {"t": "零基础VibeCoding入门！Windows系统8步从零搭建DeepSeek Harness，不用懂代码，不用提前接触终端，跟着一步步复制命令即可。半小时就能搭好你的本地AI Agent工作台", "pnum": "1.2", "punit": "万", "d": "2026-09-22 21:56", "c": "assets/covers/18.jpg", "u": "https://www.douyin.com/video/7688358260767741787", "g": "#vibecoding / #vibecoding大赏 / #deepseek / #deepseekharness"}, "19": {"t": "Archify｜DeepSeek Harness 必装Skill 输入一句话，输出可点击可检索可导出的交互架构图 支持架构、时序、数据流、状态机、工作流可视化 读取源码自动绘图，输出HTML，多格式导出含WebM视频 本地运行，不联网、无遥测，DSH一键调用 评论区投票，下期拆解哪个功能", "pnum": "7,277", "punit": "", "d": "2026-09-21 17:19", "c": "assets/covers/19.jpg", "u": "https://www.douyin.com/video/7687915774602431206", "g": "#deepseek / #vibecoding / #vibecoding大赏"}, "20": {"t": "Minimax H3低成本出片教程来了 本地显卡跑不动MiniMax H3？不用买高端显卡，云端租卡低成本出片，手把手带你避坑，快速生成无水印AI视频", "pnum": "1.2", "punit": "万", "d": "2026-09-21 00:39", "c": "assets/covers/20.jpg", "u": "https://www.douyin.com/video/7687657945820079177", "g": "#ai / #vibecoding / #vibecoding大赏 / #抖音精选"}, "21": {"t": "吃白饭的用户？！压力一只大肥鱼？！", "pnum": "1.1", "punit": "万", "d": "2026-09-19 23:59", "c": "assets/covers/21.jpg", "u": "https://www.douyin.com/video/7687276759175766153", "g": "#deepseek / #vibecoding / #vibecoding大赏"}, "22": {"t": "|vibecoding大赏| 这个月 GitHub 上最火的 10 个 Skills，一次看完，先点赞收藏。 第1名，superpowers。给 coding agent 装一套软件工程方法论：先写 spec 再写代码，TDD 全程跑通。 第2名，skills。TypeScript 大佬 Matt Pocock 从他的 .claude 目录直接开源，面向真正的工程师。 第3名，ECC。API 设计、编码规范、测试、安全、记忆，一整套 agent 工程优化系统。 第4名，andrej-karpathy-skills。把 Karpathy 关于大模型写代码的坑，浓缩成一个 CLAUDE.md 文件。 第5名，skills。Anthropic 官方 Skills 实现，品牌文档、数据分析、自动化一网打尽。 第6名，ponytail。让 AI 像最懒的 senior 工程师思考：最好的代码，是你根本没写的那部分。 第7名，ui-ux-pro-max-skill。给 AI 一套设计大脑，界面不再是「一眼 AI 味」的紫渐变。 第8名，caveman。原始人式极简表达，砍掉约 65% 的 token 消耗，省钱又提速。 第9名，agent-skills。Google 工程师 Addy Osmani 出品，前端性能与工程质量技能集。 第10名，taste-skill。给 AI 补上「审美」这一课，做出来的东西不再千篇一律。 前十名都在这了，你装了几个？评论区告诉我，下期做 Skills 实测", "pnum": "1.6", "punit": "万", "d": "2026-09-19 00:46", "c": "assets/covers/22.jpg", "u": "https://www.douyin.com/video/7686917793110821491", "g": "#vibecoding / #vibecoding大赏 / #agent / #deepseek"}, "23": {"t": "|vibecoding大赏| 一句话就能让大肥鱼剪出超高完成度的视频？！anything-2-explainer接入DSH。 一句话，让DSH生成一条高质量科普视频", "pnum": "1.0", "punit": "万", "d": "2026-09-18 21:28", "c": "assets/covers/23.jpg", "u": "https://www.douyin.com/video/7686866697751977179", "g": "#vibecoding大赏 / #deepseek / #deepseekharness / #视频剪辑"}, "24": {"t": "|vibecoding大赏|当我的dsh试着用blender 凝神观瞻这件数字雕塑，第一眼便能感受到生成式建模独有的、充满原始生命力的质感。 面部的处理尤为耐人寻味。设计者摒弃了二次元惯用的大面积眼部贴图，选择将五官实体化为凸起的构件。尖锐的眉骨线条斜斜切入面部曲面，狭长的眼型凝练而锐利。在这件作品之中，五官变成了镌刻在躯体表面的浮雕，拥有属于雕塑本身的体量感。尽管和原画的柔美气质相去甚远，但意外诞生了独属于这个版本的性格。 服饰部分可以看见参考原画留下的印记。围裙上的鲸鱼浮雕保留了原作核心标识，裙摆的金边、顶部珠串发箍都得到还原。但整体同样贯彻这套硬质的造型语言，衣料没有柔软布料的褶皱，如同坚硬珐琅外壳包裹躯体。材质观感如同哑光的珐琅玩偶，仿佛敲击表面会发出清脆的声响。 瑕瑜共生亦是这件作品魅力所在。从工业化资产标准评判，形体存在较多需要拓扑修缮之处；可作为独立艺术品审视，这些生硬的接缝、块状的分割非但不算缺陷，反而构成整套风格的骨架。它是一面镜子，直观展现AIGC建模当下独有的矛盾美学：人类画师意图里的温柔诗意，经由模型的理解，蜕变为坚硬、肃然、带着神秘气质的另一个生命", "pnum": "1.1", "punit": "万", "d": "2026-09-18 00:16", "c": "assets/covers/24.jpg", "u": "https://www.douyin.com/video/7686538960286009518", "g": "#blender模型 / #vibecoding大赏 / #deepseek / #不会代码但我造了个小工具"}, "25": {"t": "|vibecoding大赏| 52 个设计 skill，一句话，就能出这种网页。 以前让 AI 写网页，出来的一眼就是 AI 做的。紫色渐变糊一屏，emoji 当图标，还特别爱编数据——「快十倍」，鬼知道哪来的。 所以我把 OpenDesign 的设计能力，接进了我每天都在用的 DeepSeek Harness。 一共 52 个 skill：28 个渲染模板，23 个工艺 skill，外加一个路由。 再配上 32 套设计系统。全部 2.6 MB，纯文件，零依赖。 它干活分三步。 第一步，从一个写好的模板起笔，不从空白文件开始。 第二步，读设计系统的真实色值——不是凭记忆猜颜色。 第三步，过一遍检查表。裸 hex、强调色超预算、编造指标、emoji 当图标——机器判定，不通过就返工。 所以我只要说一句「做一个某某的落地页」，它自己选模板、配颜色、过闸门，最后给我一个自包含的 HTML 文件。打开就能用，不用再调样式。 代码开源，Apache-2.0，可以商用。 链接在github主页。想给自己的 AI 助手装上设计能力的，直接抄", "pnum": "5,165", "punit": "", "d": "2026-09-16 17:02", "c": "assets/covers/25.jpg", "u": "https://www.douyin.com/video/7686055998913536138", "g": "#vibecoding / #代码工具 / #deepseek / #vibecoding大赏"}};
   var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
 
   /* ── 滚动揭示 ── */
-  var items = $$('[data-rv], .rvimg');
+  var items = $$('[data-rv]');
   if (RM || !('IntersectionObserver' in window)) {
     items.forEach(function(el){ el.classList.add('in'); });
   } else {
@@ -1365,7 +1372,7 @@ html{-webkit-tap-highlight-color:transparent}
   }
   function revealVisible(){
     var vh = window.innerHeight;
-    $$('[data-rv]:not(.in), .rvimg:not(.in)').forEach(function(el){
+    $$('[data-rv]:not(.in)').forEach(function(el){
       var r = el.getBoundingClientRect();
       if (r.top < vh*1.05 && r.bottom > -60) el.classList.add('in');
     });
@@ -1419,7 +1426,7 @@ html{-webkit-tap-highlight-color:transparent}
   var spotOn = false, spx = mx, spy = my;
   var cur = document.getElementById('cursor'), curLabel = document.getElementById('cursorLabel');
   var curOn = false, curHot = false, cux = mx, cuy = my;
-  var skew = 0, lastY = window.scrollY;
+  var skew = 0, lastY = window.scrollY, lastRevealY = -1;
 
   window.addEventListener('pointermove', function(e){
     mx = e.clientX; my = e.clientY;
@@ -1445,6 +1452,7 @@ html{-webkit-tap-highlight-color:transparent}
 
   function tick(){
     var y = window.scrollY;
+    if (y !== lastRevealY) { lastRevealY = y; revealVisible(); }   // 滚动即补揭示，不单靠 IO
     var docH = document.documentElement.scrollHeight - window.innerHeight;
     prog.style.transform = 'scaleX(' + (docH > 0 ? Math.min(1, y / docH) : 0) + ')';
     nav.classList.toggle('scrolled', y > 30);
